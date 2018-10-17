@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>overledger-sdk-java</artifactId>
+        <groupId>io.overledger</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>overledger-sdk-api</artifactId>
+
+    <name>overledger-sdk-api</name>
+    <description>OverLedger SDK For Java API</description>
+    <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-api</url>
+
+    <organization>
+        <url>https://quant.network</url>
+        <name>Quant Network</name>
+    </organization>
+
+    <inceptionYear>2018</inceptionYear>
+
+    <developers>
+        <developer>
+            <name>Rui Wang</name>
+            <email>rui.wang@quant.network</email>
+            <organization>Quant Network</organization>
+            <organizationUrl>https://quant.network</organizationUrl>
+            <timezone>UTC+00:00</timezone>
+        </developer>
+    </developers>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
