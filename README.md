@@ -35,8 +35,13 @@ _TODO:_ Link to mvn repository here
 
 Example dependency:
 
-```java
-# TODO: Need to add an example copy of the maven dependency block (fully installation)
+```xml
+<!-- TODO: Need to add an example copy of the maven dependency block (fully installation) -->
+<dependency>
+    <groupId>io.overledger</groupId>
+    <artifactId>overledger-sdk-java</artifactId>
+    <version>1.0.0-alpha</version>
+</dependency>
 ```
 
 ### Tailored installation
@@ -73,12 +78,12 @@ This SDK acts as library for embedding in an application, and facilitates the ex
 
 Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more Details.
 
-| Stable Release Version | JDK Version compatibility | JDK Version compatibility | Release Date |
+| Stable Release Version | JDK Version compatibility | BPI Version compatibility | Release Date |
 | ---------------------- | ------------------------- | ------------------------- | ------------ |
-| 1.0.0                  | 1.8+                      | 1.0.0-alpha               | \*30/10/2018 |
+| 1.0.0-alpha            | 1.8+                      | 1.0.0-alpha               | \*30/10/2018 |
 
 ## Release notes
 
-| Release |                        Notes                         |
-| ------- | :--------------------------------------------------: |
-| 1.0.0   | [v1.0.0 release notes](docs/release_v1.0.0_notes.md) |
+| Release       |                        Notes                                     |
+| ------------- | :--------------------------------------------------------------: |
+| 1.0.0-alpha   | [v1.0.0-alpha release notes](docs/release_v1.0.0-alpha_notes.md) |
