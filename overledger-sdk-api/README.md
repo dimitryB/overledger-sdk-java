@@ -2,19 +2,31 @@
 
 API module contains interfaces which are used as guideline for helping SDK implementation
 
+## Maven dependency:
+
+```xml
+<dependency>
+    <groupId>io.overledger</groupId>
+    <artifactId>overledger-sdk-api</artifactId>
+    <version>1.0.0-alpha</version>
+</dependency>
+```
+
 ## io.overledger.OverledgerContext
 
 [OverledgerContext](./src/io/overledger/OverledgerContext.java) is designed for holding Overledger BPI key, Mapp ID and BPI endpoint constants.
 
 OverledgerContext.loadContext() method loads following properties from Properties object or InputStream
 
-* overledger.baseurl=[Endpont base URL]
-* overledger.write=[Endpont for writing transaction]
-* overledger.read.id=[Endpont for reading transaction by transaction ID]
-* overledger.read.mappid=[Endpont for reading transaction by Mapp ID]
-* overledger.read.txhash=[Endpont for reading transaction by transaction hash]
-* overledger.bpikey=[BPI Key]
-* overledger.mappid=[Mapp ID]
+```
+overledger.baseurl=[Endpont base URL]
+overledger.write=[Endpont for writing transaction]
+overledger.read.id=[Endpont for reading transaction by transaction ID]
+overledger.read.mappid=[Endpont for reading transaction by Mapp ID]
+overledger.read.txhash=[Endpont for reading transaction by transaction hash]
+overledger.bpikey=[BPI Key]
+overledger.mappid=[Mapp ID]
+```
 
 ## io.overledger.api.Account
 
