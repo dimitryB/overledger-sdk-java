@@ -24,9 +24,9 @@ public interface OverledgerTransaction {
 
     /**
      * Get timestamp (Optional: new transaction does not required timestamp)
-     * @return Instant containing timestamp
+     * @return String containing timestamp
      */
-    Instant getTimestamp();
+    String getTimestamp();
 
     /**
      * Get DLT transaction list

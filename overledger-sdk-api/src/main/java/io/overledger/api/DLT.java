@@ -5,6 +5,6 @@ package io.overledger.api;
  */
 public enum DLT {
 
-    BITCOIN, ETHEREUM, RIPPLE
+    bitcoin, ehereum, ripple
 
 }
