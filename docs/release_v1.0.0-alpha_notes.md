@@ -1,6 +1,6 @@
-# Overledger SDK for Java 1.0.0 release
+# Overledger SDK for Java 1.0.0-alpha release
 
-This Overledger SDK 1.0.0 has features of BPI API and Bitcoin, Ethereum and Ripple implementation
+This Overledger SDK 1.0.0-alpha has features of BPI API and Bitcoin, Ethereum and Ripple implementation
 
 ----------------------------------------
 

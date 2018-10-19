@@ -10,7 +10,7 @@ Overledger is an operating system that allows distributed apps (MApps) to connec
 
 ## Technologies
 
-The Overledger SDK is maven compatible dependency writen in _TODO:_ [state what particular flavour was used]
+The Overledger SDK is maven compatible dependency written in _TODO:_ [state what particular flavour was used]
 
 ### Overledger SDK Structure
 
@@ -35,13 +35,18 @@ _TODO:_ Link to mvn repository here
 
 Example dependency:
 
-```java
-# TODO: Need to add an example copy of the maven dependency block (fully installation)
+```xml
+<!-- SDK bundle -->
+<dependency>
+    <groupId>io.overledger</groupId>
+    <artifactId>overledger-sdk-bundle</artifactId>
+    <version>1.0.0-alpha</version>
+</dependency>
 ```
 
 ### Tailored installation
 
-When a full implementation of all depencencies is not required, it can be tailored to only implement those services that will be utilised.
+When a full implementation of all dependencies is not required, it can be tailored to only implement those services that will be utilised.
 
 #### [overledger-sdk-api](./overledger-sdk-api/README.md)
 
@@ -73,12 +78,12 @@ This SDK acts as library for embedding in an application, and facilitates the ex
 
 Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more Details.
 
-| Stable Release Version | JDK Version compatibility | JDK Version compatibility | Release Date |
+| Stable Release Version | JDK Version compatibility | BPI Version compatibility | Release Date |
 | ---------------------- | ------------------------- | ------------------------- | ------------ |
-| 1.0.0                  | 1.8+                      | 1.0.0-alpha               | \*30/10/2018 |
+| 1.0.0-alpha            | 1.8+                      | 1.0.0-alpha               | \*30/10/2018 |
 
 ## Release notes
 
-| Release |                        Notes                         |
-| ------- | :--------------------------------------------------: |
-| 1.0.0   | [v1.0.0 release notes](docs/release_v1.0.0_notes.md) |
+| Release       |                        Notes                                     |
+| ------------- | :--------------------------------------------------------------: |
+| 1.0.0-alpha   | [v1.0.0-alpha release notes](docs/release_v1.0.0-alpha_notes.md) |
