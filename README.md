@@ -10,7 +10,7 @@ Overledger is an operating system that allows distributed apps (MApps) to connec
 
 ## Technologies
 
-The Overledger SDK is maven compatible dependency writen in _TODO:_ [state what particular flavour was used]
+The Overledger SDK is maven compatible dependency written in _TODO:_ [state what particular flavour was used]
 
 ### Overledger SDK Structure
 
@@ -36,17 +36,17 @@ _TODO:_ Link to mvn repository here
 Example dependency:
 
 ```xml
-<!-- TODO: Need to add an example copy of the maven dependency block (fully installation) -->
+<!-- SDK bundle -->
 <dependency>
     <groupId>io.overledger</groupId>
-    <artifactId>overledger-sdk-java</artifactId>
+    <artifactId>overledger-sdk-bundle</artifactId>
     <version>1.0.0-alpha</version>
 </dependency>
 ```
 
 ### Tailored installation
 
-When a full implementation of all depencencies is not required, it can be tailored to only implement those services that will be utilised.
+When a full implementation of all dependencies is not required, it can be tailored to only implement those services that will be utilised.
 
 #### [overledger-sdk-api](./overledger-sdk-api/README.md)
 

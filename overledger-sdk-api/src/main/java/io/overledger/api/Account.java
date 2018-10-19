@@ -4,6 +4,7 @@ import java.math.BigInteger;
 
 /**
  * Definition of account, DLT account should implement this interface
+ * Implementation of account could hold spendable addresses or transactions of DLT
  */
 public interface Account {
 
