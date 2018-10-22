@@ -44,20 +44,12 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                         .bodyToMono(ByteArrayResource.class)
                         .map(ByteArrayResource::getByteArray)
                         .map(String::new)
-                        .map(s -> {
-                            System.out.println(clientResponse.statusCode());
-                            System.out.println(s);
-                            return s; })
                         .map(ClientResponseException::new)
                 )
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
                         .bodyToMono(ByteArrayResource.class)
                         .map(ByteArrayResource::getByteArray)
                         .map(String::new)
-                        .map(s -> {
-                            System.out.println(clientResponse.statusCode());
-                            System.out.println(s);
-                            return s; })
                         .map(ClientResponseException::new)
                 )
                 .bodyToMono(responseClass)
@@ -96,20 +88,12 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                         .bodyToMono(ByteArrayResource.class)
                         .map(ByteArrayResource::getByteArray)
                         .map(String::new)
-                        .map(s -> {
-                            System.out.println(clientResponse.statusCode());
-                            System.out.println(s);
-                            return s; })
                         .map(ClientResponseException::new)
                 )
                 .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
                         .bodyToMono(ByteArrayResource.class)
                         .map(ByteArrayResource::getByteArray)
                         .map(String::new)
-                        .map(s -> {
-                            System.out.println(clientResponse.statusCode());
-                            System.out.println(s);
-                            return s; })
                         .map(ClientResponseException::new)
                 )
                 .bodyToFlux(responseClass)
