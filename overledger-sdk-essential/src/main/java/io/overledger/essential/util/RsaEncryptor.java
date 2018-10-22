@@ -10,7 +10,12 @@ import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Optional;
 
+/**
+ * RSA Encryption implementation of Encryptor
+ * This utility can be used for data message encryption and decryption
+ */
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RsaEncryptor implements Encryptor {
@@ -21,10 +26,18 @@ public class RsaEncryptor implements Encryptor {
     PrivateKey privateKey;
     PublicKey publicKey;
 
+    /**
+     * Default constructor, a new pair of keys would be generated
+     */
     public RsaEncryptor() {
         this.generateKey();
     }
 
+    /**
+     * New RSA encryptor with given public and private keys
+     * @param privateKey String containing the private key in Base64 encoding
+     * @param publicKey String containing the private key in Base64 encoding
+     */
     public RsaEncryptor(String privateKey, String publicKey) {
         this.getPrivateKey(privateKey);
         this.getPublicKey(publicKey);
@@ -73,6 +86,26 @@ public class RsaEncryptor implements Encryptor {
             result = null;
         }
         return result;
+    }
+
+    /**
+     * Get current public key in Encoded format
+     * @return String containing the public key
+     */
+    public String getPublicKey() {
+        return Optional
+                .ofNullable(Base64.getEncoder().encodeToString(this.publicKey.getEncoded()))
+                .orElse(null);
+    }
+
+    /**
+     * Get current private key in Encoded format
+     * @return String containing the private key
+     */
+    public String getPrivateKey() {
+        return Optional
+                .ofNullable(Base64.getEncoder().encodeToString(this.privateKey.getEncoded()))
+                .orElse(null);
     }
 
     @Override

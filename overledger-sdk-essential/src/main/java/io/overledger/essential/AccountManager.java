@@ -1,16 +1,18 @@
 package io.overledger.essential;
 
 import io.overledger.api.Account;
+import io.overledger.essential.exception.EmptyAccountException;
+import io.overledger.essential.exception.IllegalKeyException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Overledger account manager
- * OverledgerSDK store and dispatch wallet for different DLTs
+ * Used for storing and dispatching account of different DLTs by {@link DefaultOverledgerSDK}
  */
-final class AccountManager {
+class AccountManager {
 
-    private Map<String, Account> walletList;
+    private Map<String, Account> accountMap;
 
     private AccountManager() {}
 
@@ -19,11 +21,16 @@ final class AccountManager {
      * @param dlt String containing DLT type
      * @param account Account containing account instance
      */
-    void registerAccount(String dlt, Account account) {
-        if (null == this.walletList) {
-            this.walletList = new HashMap<>();
+    void registerAccount(String dlt, Account account) throws IllegalKeyException, EmptyAccountException {
+        if (null == dlt) {
+            throw new IllegalKeyException();
+        } else if (null == account) {
+            throw new EmptyAccountException();
         }
-        this.walletList.put(dlt, account);
+        if (null == this.accountMap) {
+            this.accountMap = new HashMap<>();
+        }
+        this.accountMap.put(dlt, account);
     }
 
     /**
@@ -32,8 +39,8 @@ final class AccountManager {
      * @return Account containing give DLT wallet
      */
     Account getAccount(String dlt) {
-        if (null != this.walletList) {
-            return this.walletList.get(dlt);
+        if (null != this.accountMap) {
+            return this.accountMap.get(dlt);
         }
         return null;
     }

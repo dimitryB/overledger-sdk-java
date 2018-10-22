@@ -1,7 +1,6 @@
 package io.overledger.essential.dto;
 
 import io.overledger.api.DLTStatus;
-import io.overledger.api.DltTransactionResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WriteDltTransactionResponse implements DltTransactionResponse {
+public class DltTransactionResponse implements io.overledger.api.DltTransactionResponse {
 
     String dlt;
     String transactionHash;

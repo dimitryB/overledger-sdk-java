@@ -1,6 +1,5 @@
 package io.overledger.essential.dto;
 
-import io.overledger.api.DltTransactionRequest;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.math.BigInteger;
@@ -13,7 +12,7 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WriteDltTransactionRequest implements DltTransactionRequest {
+public class DltTransactionRequest implements io.overledger.api.DltTransactionRequest {
 
     String dlt;
     String fromAddress;

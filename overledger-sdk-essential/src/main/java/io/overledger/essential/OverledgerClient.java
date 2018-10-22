@@ -2,7 +2,8 @@ package io.overledger.essential;
 
 import io.overledger.OverledgerContext;
 import io.overledger.api.Client;
-import io.overledger.api.OverledgerTransaction;
+import io.overledger.essential.dto.OverledgerTransactionRequest;
+import io.overledger.essential.dto.OverledgerTransactionResponse;
 import io.overledger.exception.ClientResponseException;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +17,7 @@ import java.util.UUID;
 /**
  * Basic implementation of client
  */
-public final class OverledgerClient implements Client {
+public final class OverledgerClient<T extends OverledgerTransactionRequest, S extends OverledgerTransactionResponse> implements Client<T, S> {
 
     private static Client I;
     private static final String BEARER = "Bearer";
@@ -32,7 +33,7 @@ public final class OverledgerClient implements Client {
     }
 
     @Override
-    public OverledgerTransaction postTransaction(OverledgerTransaction ovlTransaction, Class<OverledgerTransaction> requestClass, Class<OverledgerTransaction> responseClass) {
+    public S postTransaction(T ovlTransaction, Class<T> requestClass, Class<S> responseClass) {
         return this.webClient
                 .post()
                 .uri(OverledgerContext.WRITE_TRANSACTIONS)
@@ -64,7 +65,7 @@ public final class OverledgerClient implements Client {
     }
 
     @Override
-    public OverledgerTransaction getTransaction(UUID overledgerTransactionID, Class<OverledgerTransaction> responseClass) {
+    public S getTransaction(UUID overledgerTransactionID, Class<S> responseClass) {
         return this.webClient
                 .get()
                 .uri(OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_ID, overledgerTransactionID)
@@ -86,7 +87,7 @@ public final class OverledgerClient implements Client {
     }
 
     @Override
-    public List<OverledgerTransaction> getTransactions(String mappId, Class<OverledgerTransaction> responseClass) {
+    public List<S> getTransactions(String mappId, Class<S> responseClass) {
         return this.webClient
                 .get()
                 .uri(OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID, mappId)
@@ -117,7 +118,7 @@ public final class OverledgerClient implements Client {
     }
 
     @Override
-    public OverledgerTransaction getTransaction(String dlt, String transactionHash, Class<OverledgerTransaction> responseClass) {
+    public S getTransaction(String dlt, String transactionHash, Class<S> responseClass) {
         return this.webClient
                 .get()
                 .uri(OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH, dlt, transactionHash)

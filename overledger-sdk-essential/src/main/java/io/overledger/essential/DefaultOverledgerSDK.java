@@ -1,20 +1,36 @@
 package io.overledger.essential;
 
 import io.overledger.api.*;
+import io.overledger.essential.dto.OverledgerTransactionRequest;
+import io.overledger.essential.dto.OverledgerTransactionResponse;
 import io.overledger.essential.exception.DltNotSupportedException;
+import io.overledger.essential.exception.EmptyAccountException;
+import io.overledger.essential.exception.EmptyDltException;
+import io.overledger.essential.exception.IllegalKeyException;
+import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Basic implementation of OverledgerSDK
  */
+@Slf4j
 public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     private NETWORK network;
-    private AccountManager accountManager = AccountManager.newInstance();
-    private Client client = OverledgerClient.getInstance();
+    private AccountManager accountManager;
+    private Client client;
 
-    private DefaultOverledgerSDK(NETWORK network) { this.initial(network); }
+    private DefaultOverledgerSDK(NETWORK network) {
+        this(network, AccountManager.newInstance(),OverledgerClient.getInstance());
+    }
+
+    private DefaultOverledgerSDK(NETWORK network, AccountManager accountManager, Client client) {
+        this.initial(network);
+        this.accountManager = accountManager;
+        this.client = client;
+    }
 
     private void throwCauseException(Exception e) throws Exception {
         Throwable exception = e;
@@ -40,11 +56,23 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     @Override
     public void addAccount(String dlt, Account account) {
-        this.accountManager.registerAccount(dlt, account.withNetwork(this.network));
+        try {
+            this.accountManager.registerAccount(dlt, account.withNetwork(this.network));
+        } catch (IllegalKeyException e) {
+            log.error(e.toString(), e);
+        } catch (EmptyAccountException e) {
+            log.error(e.toString(), e);
+        }
     }
 
     @Override
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction) throws Exception {
+        if (null == ovlTransaction) {
+            throw new NullPointerException();
+        }
+        if (null == ovlTransaction.getDltData()) {
+            throw new EmptyDltException();
+        }
         if (!this.verifySupportAllDLTs(ovlTransaction)) {
             throw new DltNotSupportedException();
         }
@@ -60,8 +88,8 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
                                 dltTransactionRequest
                         );
                         return dltTransactionRequest;
-                    });
-            overledgerTransaction = this.client.postTransaction(ovlTransaction, OverledgerTransaction.class, OverledgerTransaction.class);
+                    }).collect(Collectors.toList());
+            overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -72,7 +100,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public OverledgerTransaction readTransaction(UUID overledgerTransactionID) throws Exception {
         OverledgerTransaction overledgerTransaction = null;
         try {
-            overledgerTransaction = this.client.getTransaction(overledgerTransactionID, OverledgerTransaction.class);
+            overledgerTransaction = (OverledgerTransactionResponse)this.client.getTransaction(overledgerTransactionID, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -83,7 +111,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public List<OverledgerTransaction> readTransactions(String mappId) throws Exception {
         List<OverledgerTransaction> overledgerTransactionList = null;
         try {
-            overledgerTransactionList = this.client.getTransactions(mappId, OverledgerTransaction.class);
+            overledgerTransactionList = this.client.getTransactions(mappId, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -94,7 +122,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public OverledgerTransaction readTransaction(String dlt, String transactionHash) throws Exception {
         OverledgerTransaction overledgerTransaction = null;
         try {
-            overledgerTransaction = this.client.getTransaction(dlt, transactionHash, OverledgerTransaction.class);
+            overledgerTransaction = (OverledgerTransactionResponse)this.client.getTransaction(dlt, transactionHash, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -103,6 +131,10 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
 
     public static DefaultOverledgerSDK newInstance(NETWORK network) {
         return new DefaultOverledgerSDK(network);
+    }
+
+    public static DefaultOverledgerSDK newInstance(NETWORK network, AccountManager accountManager, Client client) {
+        return new DefaultOverledgerSDK(network, accountManager, client);
     }
 
 }

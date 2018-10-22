@@ -11,7 +11,7 @@
 
     <artifactId>overledger-sdk-essential</artifactId>
 
-    <name>overledger-sdk-api</name>
+    <name>overledger-sdk-essential</name>
     <description>OverLedger SDK For Java API Essential</description>
     <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-essential</url>
 
@@ -49,26 +49,17 @@
             <groupId>io.overledger</groupId>
             <artifactId>overledger-sdk-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

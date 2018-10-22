@@ -6,6 +6,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+/**
+ * ZLIB implementation of compressor
+ */
 @Slf4j
 public class ZlibCompressor implements Compressor {
 

@@ -11,11 +11,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class WriteOverledgerTransactionResponse implements OverledgerTransaction {
+public class OverledgerTransactionResponse implements OverledgerTransaction {
 
     UUID overledgerTransactionId;
     String  mappId;
     String timestamp;
-    List<WriteDltTransactionResponse> dltData;
+    List<DltTransactionResponse> dltData;
 
 }
