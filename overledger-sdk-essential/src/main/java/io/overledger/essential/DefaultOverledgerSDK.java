@@ -8,6 +8,10 @@ import io.overledger.essential.exception.EmptyAccountException;
 import io.overledger.essential.exception.EmptyDltException;
 import io.overledger.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public final class DefaultOverledgerSDK implements OverledgerSDK {
 
+    private static final int KB = 1024;
     private NETWORK network;
     private AccountManager accountManager;
     private Client client;
@@ -43,6 +48,16 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     private boolean verifySupportAllDLTs(OverledgerTransaction ovlTransaction) {
         return !ovlTransaction.getDltData().stream().anyMatch(dltTransaction ->
                 (null == this.accountManager.getAccount(dltTransaction.getDlt())));
+    }
+
+    private byte[] getStream(InputStream stream) throws IOException {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(stream.available());
+        byte bytes[] = new byte[KB];
+        int read;
+        while ((read = stream.read(bytes)) > 0) {
+            byteBuffer.put(bytes, 0, read);
+        }
+        return byteBuffer.array();
     }
 
     public NETWORK getNetwork() {
@@ -127,6 +142,40 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
             this.throwCauseException(e);
         }
         return overledgerTransaction;
+    }
+
+    public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, byte[] data) throws Exception {
+        if (null == ovlTransaction) {
+            throw new NullPointerException();
+        }
+        if (null == ovlTransaction.getDltData()) {
+            throw new EmptyDltException();
+        }
+        if (!this.verifySupportAllDLTs(ovlTransaction)) {
+            throw new DltNotSupportedException();
+        }
+        OverledgerTransaction overledgerTransaction = null;
+        try {
+            ovlTransaction.getDltData().stream()
+                    .map(dltTransaction -> (DltTransactionRequest)dltTransaction)
+                    .map(dltTransactionRequest -> {
+                        this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
+                                dltTransactionRequest.getFromAddress(),
+                                dltTransactionRequest.getToAddress(),
+                                data,
+                                dltTransactionRequest
+                        );
+                        return dltTransactionRequest;
+                    }).collect(Collectors.toList());
+            overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
+        } catch (Exception e) {
+            this.throwCauseException(e);
+        }
+        return overledgerTransaction;
+    }
+
+    public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, InputStream inputStream) throws Exception {
+        return this.writeTransaction(ovlTransaction, this.getStream(inputStream));
     }
 
     public static DefaultOverledgerSDK newInstance(NETWORK network) {

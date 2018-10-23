@@ -9,6 +9,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import java.util.List;
@@ -32,6 +33,14 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .build();
     }
 
+    private Mono<ClientResponseException> getClientResponse(ClientResponse clientResponse) {
+        return clientResponse
+                .bodyToMono(ByteArrayResource.class)
+                .map(ByteArrayResource::getByteArray)
+                .map(String::new)
+                .map(ClientResponseException::new);
+    }
+
     @Override
     public S postTransaction(T ovlTransaction, Class<T> requestClass, Class<S> responseClass) {
         return this.webClient
@@ -40,18 +49,8 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(ovlTransaction), requestClass)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
+                .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                 .bodyToMono(responseClass)
                 .block();
     }
@@ -62,18 +61,8 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .get()
                 .uri(OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_ID, overledgerTransactionID)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
+                .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                 .bodyToMono(responseClass)
                 .block();
     }
@@ -84,18 +73,8 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .get()
                 .uri(OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID, mappId)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
+                .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                 .bodyToFlux(responseClass)
                 .collectList()
                 .block();
@@ -107,18 +86,8 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .get()
                 .uri(OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH, dlt, transactionHash)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
-                        .bodyToMono(ByteArrayResource.class)
-                        .map(ByteArrayResource::getByteArray)
-                        .map(String::new)
-                        .map(ClientResponseException::new)
-                )
+                .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                 .bodyToMono(responseClass)
                 .block();
     }
