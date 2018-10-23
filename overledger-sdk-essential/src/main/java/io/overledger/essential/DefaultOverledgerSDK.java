@@ -8,7 +8,6 @@ import io.overledger.essential.exception.EmptyAccountException;
 import io.overledger.essential.exception.EmptyDltException;
 import io.overledger.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -144,6 +143,13 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return overledgerTransaction;
     }
 
+    /**
+     * Write transaction to BPI layer from byte array
+     * @param ovlTransaction OverledgerTransaction containing overledger transaction request
+     * @param data byte array containing the data
+     * @return Overledger response
+     * @throws Exception throw if connection between client and manager is broken
+     */
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, byte[] data) throws Exception {
         if (null == ovlTransaction) {
             throw new NullPointerException();
@@ -174,6 +180,13 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return overledgerTransaction;
     }
 
+    /**
+     * Write transaction to BPI layer from input stream
+     * @param ovlTransaction OverledgerTransaction containing overledger transaction request
+     * @param inputStream InputSteam containing data stream
+     * @return Overledger response
+     * @throws Exception throw if connection between client and manager is broken
+     */
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, InputStream inputStream) throws Exception {
         return this.writeTransaction(ovlTransaction, this.getStream(inputStream));
     }
