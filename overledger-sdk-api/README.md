@@ -32,7 +32,7 @@ overledger.mappid=[Mapp ID]
 
 [Account](./src/io/overledger/api/Account.java) interface is used for declaring basic account functions.
 
-Overledger SDK uee Account to sign transactions
+Overledger SDK use Account to sign transactions
 
 ## io.overledger.api.Client
 

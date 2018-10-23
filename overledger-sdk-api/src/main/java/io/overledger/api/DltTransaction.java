@@ -1,7 +1,5 @@
 package io.overledger.api;
 
-import java.math.BigInteger;
-
 /**
  * Definition of DLT transaction
  * This is the basic DLT message definition that BPI layer accepts

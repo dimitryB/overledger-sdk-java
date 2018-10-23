@@ -36,4 +36,13 @@ public interface Account {
      */
     void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction);
 
+    /**
+     * Sign given transaction, update DltTransaction with signedTransaction field/property
+     * @param fromAddress String containing From address
+     * @param toAddress String containing To address
+     * @param message byte array containing the message
+     * @param dltTransaction DltTransaction containing the original transaction
+     */
+    void sign(String fromAddress, String toAddress, byte[] message, DltTransaction dltTransaction);
+
 }
