@@ -56,73 +56,37 @@ public class BitcoinAccount implements Account {
         this.key = privateKey;
     }
 
-    private void sign(String fromAddress, String toAddress, byte[] message, DltTransactionRequest dltTransaction) {
-        Transaction transaction = new Transaction(this.networkParameters);
-        Coin totalPayout = Coin.valueOf(dltTransaction.getAmount().longValue());
-        int outputNumber = 2;
-        if ((null != dltTransaction.getMessage() && !dltTransaction.getMessage().isEmpty())) {
-            BitcoinData bitcoinData;
-            try {
-                switch (this.networkParameters.getAddressHeader()) {
-                    case MAIN_ADDR:
-                        bitcoinData = new BitcoinData(NETWORK.MAIN, message, DATA_TYPE.TEXT, this.encryptor, this.compressor);
-                        break;
-                    case TEST_ADDR:
-                        bitcoinData = new BitcoinData(NETWORK.TEST, message, DATA_TYPE.TEXT, this.encryptor, this.compressor);
-                        break;
-                    default:
-                        bitcoinData = new BitcoinData(NETWORK.TEST, message, DATA_TYPE.TEXT, this.encryptor, this.compressor);
-                        break;
+    private BitcoinData createBitcoinData(Object data, DATA_TYPE type) throws DataOverSizeException, IOException {
+        switch (this.networkParameters.getAddressHeader()) {
+            case MAIN_ADDR:
+                if (data instanceof InputStream) {
+                    return new BitcoinData(NETWORK.MAIN, (InputStream)data, type, this.encryptor, this.compressor);
+                } else {
+                    return new BitcoinData(NETWORK.MAIN, (byte[])data, type, this.encryptor, this.compressor);
                 }
-                for (String address : bitcoinData.getAddressList()) {
-                    transaction.addOutput(Transaction.MIN_NONDUST_OUTPUT, Address.fromBase58(this.networkParameters, address));
-                    totalPayout = totalPayout.add(Transaction.MIN_NONDUST_OUTPUT);
+            case TEST_ADDR:
+                if (data instanceof InputStream) {
+                    return new BitcoinData(NETWORK.TEST, (InputStream)data, type, this.encryptor, this.compressor);
+                } else {
+                    return new BitcoinData(NETWORK.TEST, (byte[])data, type, this.encryptor, this.compressor);
                 }
-                outputNumber += bitcoinData.getAddressList().size();
-            } catch (DataOverSizeException e) {
-                log.error(this.getClass().getSimpleName()+"#signTransaction()", e);
-            }
+            default:
+                if (data instanceof InputStream) {
+                    return new BitcoinData(NETWORK.TEST, (InputStream)data, type, this.encryptor, this.compressor);
+                } else {
+                    return new BitcoinData(NETWORK.TEST, (byte[])data, type, this.encryptor, this.compressor);
+                }
         }
-        transaction.addOutput(Coin.valueOf(dltTransaction.getAmount().longValue()), Address.fromBase58(this.networkParameters, toAddress));
-        totalPayout = totalPayout.add(Coin.valueOf(
-                (null == dltTransaction.getFee()) ?
-                        BitcoinFees.getInstance().calculate(FEE_POLICY.NORMAL, 1, outputNumber).longValue() :
-                        dltTransaction.getFee().longValue()
-        ));
-        final Coin payout = Coin.valueOf(totalPayout.getValue());
-        UTXO inputUtxo = this.utxoList.stream()
-                .filter(utxo -> utxo.getAddress().equals(fromAddress) && utxo.getValue().isGreaterThan(payout))
-                .findFirst().orElse(null);
-        if (null == inputUtxo) {
-            return;
-        }
-        transaction.addOutput(inputUtxo.getValue().subtract(totalPayout), Address.fromBase58(this.networkParameters,
-                (null == dltTransaction.getChangeAddress()) ? fromAddress : dltTransaction.getChangeAddress()));
-        TransactionOutPoint transactionOutPoint = new TransactionOutPoint(this.networkParameters, inputUtxo.getIndex(), inputUtxo.getHash());
-        transaction.addSignedInput(transactionOutPoint, inputUtxo.getScript(), this.key, Transaction.SigHash.ALL, true);
-        transaction.getConfidence().setSource(TransactionConfidence.Source.SELF);
-        transaction.setPurpose(Transaction.Purpose.USER_PAYMENT);
-        dltTransaction.setSignedTransaction(DatatypeConverter.printHexBinary(transaction.bitcoinSerialize()));
     }
 
-    private void sign(String fromAddress, String toAddress, InputStream stream, DltTransactionRequest dltTransaction) {
+    private void sign(String fromAddress, String toAddress, Object message, DATA_TYPE type, DltTransactionRequest dltTransaction) {
         Transaction transaction = new Transaction(this.networkParameters);
         Coin totalPayout = Coin.valueOf(dltTransaction.getAmount().longValue());
         int outputNumber = 2;
         if ((null != dltTransaction.getMessage() && !dltTransaction.getMessage().isEmpty())) {
             BitcoinData bitcoinData;
             try {
-                switch (this.networkParameters.getAddressHeader()) {
-                    case MAIN_ADDR:
-                        bitcoinData = new BitcoinData(NETWORK.MAIN, stream, DATA_TYPE.TEXT, this.encryptor, this.compressor);
-                        break;
-                    case TEST_ADDR:
-                        bitcoinData = new BitcoinData(NETWORK.TEST, stream, DATA_TYPE.TEXT, this.encryptor, this.compressor);
-                        break;
-                    default:
-                        bitcoinData = new BitcoinData(NETWORK.TEST, stream, DATA_TYPE.TEXT, this.encryptor, this.compressor);
-                        break;
-                }
+                bitcoinData = this.createBitcoinData(message, type);
                 for (String address : bitcoinData.getAddressList()) {
                     transaction.addOutput(Transaction.MIN_NONDUST_OUTPUT, Address.fromBase58(this.networkParameters, address));
                     totalPayout = totalPayout.add(Transaction.MIN_NONDUST_OUTPUT);
@@ -177,20 +141,20 @@ public class BitcoinAccount implements Account {
     @Override
     public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
-            this.sign(fromAddress, toAddress, message.getBytes(), (DltTransactionRequest)dltTransaction);
+            this.sign(fromAddress, toAddress, message.getBytes(), DATA_TYPE.TEXT, (DltTransactionRequest)dltTransaction);
         }
     }
 
     @Override
     public void sign(String fromAddress, String toAddress, byte[] message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
-            this.sign(fromAddress, toAddress, message, (DltTransactionRequest)dltTransaction);
+            this.sign(fromAddress, toAddress, message, DATA_TYPE.BYTE, (DltTransactionRequest)dltTransaction);
         }
     }
 
     public void sign(String fromAddress, String toAddress, InputStream stream, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
-            this.sign(fromAddress, toAddress, stream, (DltTransactionRequest)dltTransaction);
+            this.sign(fromAddress, toAddress, stream, DATA_TYPE.BYTE, (DltTransactionRequest)dltTransaction);
         }
     }
 
@@ -242,10 +206,14 @@ public class BitcoinAccount implements Account {
     /**
      * Create Bitcoin account instance with new key
      * @param network NETWORK containing network param
+     * @param encryptor Encryptor containing encryptor
+     * @param compressor Compressor containing compressor
      * @return Account containing a Bitcoin account
      */
-    public static Account getInstance(NETWORK network) {
+    public static Account getInstance(NETWORK network, Encryptor encryptor, Compressor compressor) {
         I = new BitcoinAccount(setNetwork(network));
+        I.setEncryptor(encryptor);
+        I.setCompressor(compressor);
         return I;
     }
 
@@ -253,10 +221,14 @@ public class BitcoinAccount implements Account {
      * Get Bitcoin account instance by given secret key number
      * @param network NETWORK containing network param
      * @param privateKey BigInteger containing the key
+     * @param encryptor Encryptor containing encryptor
+     * @param compressor Compressor containing compressor
      * @return Account containing a Bitcoin account
      */
-    public static Account getInstance(NETWORK network, BigInteger privateKey) {
+    public static Account getInstance(NETWORK network, BigInteger privateKey, Encryptor encryptor, Compressor compressor) {
         I = new BitcoinAccount(setNetwork(network), privateKey);
+        I.setEncryptor(encryptor);
+        I.setCompressor(compressor);
         return I;
     }
 
@@ -264,10 +236,14 @@ public class BitcoinAccount implements Account {
      * Get Bitcoin account instance by given secret key array
      * @param network NETWORK containing network param
      * @param privateKey byte array containing the key in array
+     * @param encryptor Encryptor containing encryptor
+     * @param compressor Compressor containing compressor
      * @return Account containing a Bitcoin account
      */
-    public static Account getInstance(NETWORK network, byte privateKey[]) {
+    public static Account getInstance(NETWORK network, byte privateKey[], Encryptor encryptor, Compressor compressor) {
         I = new BitcoinAccount(setNetwork(network), privateKey);
+        I.setEncryptor(encryptor);
+        I.setCompressor(compressor);
         return I;
     }
 
@@ -275,10 +251,14 @@ public class BitcoinAccount implements Account {
      * Get Bitcoin account instance by given secret key object
      * @param network NETWORK containing network param
      * @param privateKey ECKey containing the key
+     * @param encryptor Encryptor containing encryptor
+     * @param compressor Compressor containing compressor
      * @return Account containing a Bitcoin account
      */
-    public static Account getInstance(NETWORK network, ECKey privateKey) {
+    public static Account getInstance(NETWORK network, ECKey privateKey, Encryptor encryptor, Compressor compressor) {
         I = new BitcoinAccount(setNetwork(network), privateKey);
+        I.setEncryptor(encryptor);
+        I.setCompressor(compressor);
         return I;
     }
 
