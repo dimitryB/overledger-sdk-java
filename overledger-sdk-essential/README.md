@@ -6,15 +6,15 @@ Essential module implements most of interfaces from Overledger SDK API, except A
 
 ```xml
 <dependency>
-    <groupId>io.overledger</groupId>
+    <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-essential</artifactId>
     <version>1.0.0-alpha</version>
 </dependency>
 ```
 
-## io.overledger.essential.DefaultOverledgerSDK
+## DefaultOverledgerSDK
 
-[DefaultOverledgerSDK](./src/io/overledger/essential/DefaultOverledgerSDK.java) implements OverledgerSDK.
+[DefaultOverledgerSDK](./src/network/quant/essential/DefaultOverledgerSDK.java) implements OverledgerSDK.
 Use it as a entry point of the SDK. Includes add DLT account, and request services from BPI layer.
 
 ```java
