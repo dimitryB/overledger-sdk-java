@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.overledger</groupId>
+    <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-java</artifactId>
-    <version>1.0.0-alpha-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -74,7 +74,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <timestamp>${maven.build.timestamp}</timestamp>
         <java.version>11</java.version>
-        <spring.boot.version>2.0.5.RELEASE</spring.boot.version>
+        <spring.boot.version>2.0.6.RELEASE</spring.boot.version>
         <jackson.version>2.9.7</jackson.version>
         <lombok.version>1.18.2</lombok.version>
         <bitcoinj.version>0.14.7</bitcoinj.version>
@@ -189,32 +189,32 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>io.overledger</groupId>
+                <groupId>network.quant</groupId>
                 <artifactId>overledger-sdk-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.overledger</groupId>
+                <groupId>network.quant</groupId>
                 <artifactId>overledger-sdk-essential</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.overledger</groupId>
+                <groupId>network.quant</groupId>
                 <artifactId>overledger-sdk-bitcoin</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.overledger</groupId>
+                <groupId>network.quant</groupId>
                 <artifactId>overledger-sdk-ethereum</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.overledger</groupId>
+                <groupId>network.quant</groupId>
                 <artifactId>overledger-ripple-lite</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.overledger</groupId>
+                <groupId>network.quant</groupId>
                 <artifactId>overledger-sdk-ripple-java</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -263,7 +263,7 @@
                     <version>${maven.javadoc.version}</version>
                     <executions>
                         <execution>
-                            <id>javadoc-jar</id>
+                            <id>attach-javadoc</id>
                             <phase>package</phase>
                             <goals>
                                 <goal>jar</goal>

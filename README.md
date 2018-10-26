@@ -38,7 +38,7 @@ Example dependency:
 ```xml
 <!-- SDK bundle -->
 <dependency>
-    <groupId>io.overledger</groupId>
+    <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-bundle</artifactId>
     <version>1.0.0-alpha</version>
 </dependency>

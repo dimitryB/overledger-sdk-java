@@ -12,9 +12,9 @@ API module contains interfaces which are used as guideline for helping SDK imple
 </dependency>
 ```
 
-## io.overledger.OverledgerContext
+## network.quant.OverledgerContext
 
-[OverledgerContext](./src/io/overledger/OverledgerContext.java) is designed for holding Overledger BPI key, Mapp ID and BPI endpoint constants.
+[OverledgerContext](./src/network/quant/OverledgerContext.java) is designed for holding Overledger BPI key, Mapp ID and BPI endpoint constants.
 
 OverledgerContext.loadContext() method loads following properties from Properties object or InputStream
 
@@ -28,21 +28,21 @@ overledger.bpikey=[BPI Key]
 overledger.mappid=[Mapp ID]
 ```
 
-## io.overledger.api.Account
+## network.quant.api.Account
 
-[Account](./src/io/overledger/api/Account.java) interface is used for declaring basic account functions.
+[Account](./src/network/quant/api/Account.java) interface is used for declaring basic account functions.
 
 Overledger SDK use Account to sign transactions
 
-## io.overledger.api.Client
+## network.quant.api.Client
 
-Implement [Client](./src/io/overledger/api/Client.java) interface to access BPI service with basic authorization.
+Implement [Client](./src/network/quant/api/Client.java) interface to access BPI service with basic authorization.
 
 Use OverledgerContext to get endpoint URLs, BPI key and Mapp ID
 
-## io.overledger.api.OverledgerSDK
+## network.quant.api.OverledgerSDK
 
-Interface [OverledgerSDK](./src/io/overledger/api/OverledgerSDK.java) is designed as entry point of the SDK.
+Interface [OverledgerSDK](./src/network/quant/api/OverledgerSDK.java) is designed as entry point of the SDK.
 Application access BPI layer through OverledgerSDK implementation.
 
 OverledgerSDK also includes methods for collecting DLT accounts and client implementation. 
