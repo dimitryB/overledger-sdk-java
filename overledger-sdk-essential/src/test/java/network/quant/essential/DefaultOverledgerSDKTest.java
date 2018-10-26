@@ -143,13 +143,13 @@ public class DefaultOverledgerSDKTest {
         DltTransactionResponse dltTransactionResponse = new DltTransactionResponse();
         dltTransactionResponse.setDlt(DLT.bitcoin.name());
 
-        this.overledgerTransactionResponse.setMappId("io.overledger.essential");
+        this.overledgerTransactionResponse.setMappId("network.quant.essential");
         this.overledgerTransactionResponse.setOverledgerTransactionId(this.transactionId);
         this.overledgerTransactionResponse.setDltData(Collections.singletonList(dltTransactionResponse));
 
         Mockito.when(this.client.getTransactions(Mockito.anyString(), eq(OverledgerTransactionResponse.class))).thenReturn(Collections.singletonList(this.overledgerTransactionResponse));
 
-        List<OverledgerTransaction> overledgerTransactionList = this.overledgerSDK.readTransactions("io.overledger.essential");
+        List<OverledgerTransaction> overledgerTransactionList = this.overledgerSDK.readTransactions("network.quant.essential");
         Assert.assertNotNull(overledgerTransactionList);
         Assert.assertEquals(1, overledgerTransactionList.size());
         Assert.assertEquals(this.overledgerTransactionResponse, overledgerTransactionList.get(0));
