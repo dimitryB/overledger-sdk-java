@@ -8,6 +8,7 @@ import network.quant.essential.exception.EmptyAccountException;
 import network.quant.essential.exception.EmptyDltException;
 import network.quant.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.util.CommonUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,16 +49,6 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     private boolean verifySupportAllDLTs(OverledgerTransaction ovlTransaction) {
         return !ovlTransaction.getDltData().stream().anyMatch(dltTransaction ->
                 (null == this.accountManager.getAccount(dltTransaction.getDlt())));
-    }
-
-    private byte[] getStream(InputStream stream) throws IOException {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(stream.available());
-        byte bytes[] = new byte[KB];
-        int read;
-        while ((read = stream.read(bytes)) > 0) {
-            byteBuffer.put(bytes, 0, read);
-        }
-        return byteBuffer.array();
     }
 
     public NETWORK getNetwork() {
@@ -189,7 +180,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
      * @throws Exception throw if connection between client and manager is broken
      */
     public OverledgerTransaction writeTransaction(OverledgerTransaction ovlTransaction, InputStream inputStream) throws Exception {
-        return this.writeTransaction(ovlTransaction, this.getStream(inputStream));
+        return this.writeTransaction(ovlTransaction, CommonUtil.getStream(inputStream));
     }
 
     public static DefaultOverledgerSDK newInstance(NETWORK network) {

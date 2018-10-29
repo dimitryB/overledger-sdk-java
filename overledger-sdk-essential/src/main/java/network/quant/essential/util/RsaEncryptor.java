@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import javax.crypto.Cipher;
 import java.security.*;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
@@ -56,6 +57,7 @@ public class RsaEncryptor implements Encryptor {
     }
 
     private void getPrivateKey(String privateKey) {
+        if (null == privateKey) return;
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey.getBytes()));
         try {
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
@@ -66,6 +68,7 @@ public class RsaEncryptor implements Encryptor {
     }
 
     private void getPublicKey(String publicKey) {
+        if (null == publicKey) return;
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey.getBytes()));
         try {
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
@@ -92,20 +95,28 @@ public class RsaEncryptor implements Encryptor {
      * Get current public key in Encoded format
      * @return String containing the public key
      */
-    public String getPublicKey() {
-        return Optional
-                .ofNullable(Base64.getEncoder().encodeToString(this.publicKey.getEncoded()))
-                .orElse(null);
+    public String getPublicKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (null != this.publicKey) {
+            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
+            X509EncodedKeySpec x509EncodedKeySpec = keyFactory.getKeySpec(this.publicKey, X509EncodedKeySpec.class);
+            return Base64.getEncoder().encodeToString(x509EncodedKeySpec.getEncoded());
+        } else {
+            return null;
+        }
     }
 
     /**
      * Get current private key in Encoded format
      * @return String containing the private key
      */
-    public String getPrivateKey() {
-        return Optional
-                .ofNullable(Base64.getEncoder().encodeToString(this.privateKey.getEncoded()))
-                .orElse(null);
+    public String getPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        if (null != this.privateKey) {
+            KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
+            PKCS8EncodedKeySpec pkcs8EncodedKeySpec = keyFactory.getKeySpec(this.privateKey, PKCS8EncodedKeySpec.class);
+            return Base64.getEncoder().encodeToString(pkcs8EncodedKeySpec.getEncoded());
+        } else {
+            return null;
+        }
     }
 
     @Override
