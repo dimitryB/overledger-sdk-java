@@ -3,6 +3,7 @@ package network.quant.bitcoin;
 import network.quant.api.DATA_TYPE;
 import network.quant.api.NETWORK;
 import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
+import network.quant.bitcoin.exception.BitcoinInvalidAddressException;
 import network.quant.exception.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class BitcoinDataTest {
     }
 
     @Test
-    public void testBitcoinData() throws DataOverSizeException, NetworkNotMatchException, AddressChecksumNotMatchException, UnknownDataException, BitcoinDataNotMatchingLengthException, DataNotFoundException {
+    public void testBitcoinData() throws DataOverSizeException, NetworkNotMatchException, AddressChecksumNotMatchException, UnknownDataException, BitcoinDataNotMatchingLengthException, DataNotFoundException, BitcoinInvalidAddressException {
         BitcoinData testResult = new BitcoinData(NETWORK.TEST, this.testData.getBytes(), DATA_TYPE.TEXT, null, null);
         List<String> addressList = testResult.getAddressList();
         Assert.assertNotNull(addressList);

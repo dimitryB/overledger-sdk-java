@@ -2,6 +2,7 @@ package network.quant.bitcoin;
 
 import network.quant.api.*;
 import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
+import network.quant.bitcoin.exception.BitcoinInvalidAddressException;
 import network.quant.exception.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class BitcoinData {
      * @throws DataNotFoundException throw when no Quant message not found
      * @throws BitcoinDataNotMatchingLengthException throw when cannot parse address list into data
      */
-    public BitcoinData(NETWORK network, List<String> addressList, Encryptor encryptor, Compressor compressor) throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException, BitcoinDataNotMatchingLengthException {
+    public BitcoinData(NETWORK network, List<String> addressList, Encryptor encryptor, Compressor compressor) throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException, BitcoinDataNotMatchingLengthException, BitcoinInvalidAddressException {
         this.network = network;
         this.addressList = addressList;
         this.encryptor = encryptor;
@@ -102,7 +103,7 @@ public class BitcoinData {
         this.setAddressList();
     }
 
-    private void setData() throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException, BitcoinDataNotMatchingLengthException {
+    private void setData() throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException, BitcoinDataNotMatchingLengthException, BitcoinInvalidAddressException {
         if (this.addressList.size() < 2) {
             throw new DataNotFoundException();
         } else {

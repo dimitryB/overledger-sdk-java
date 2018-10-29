@@ -3,7 +3,10 @@ package network.quant.bitcoin;
 import network.quant.api.NETWORK;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
+import network.quant.bitcoin.exception.BitcoinInvalidAddressException;
 import org.bitcoinj.core.Base58;
+
+import javax.xml.bind.DatatypeConverter;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -103,17 +106,39 @@ public class BitcoinUtils {
      * @param length int containing expected data length
      * @return byte array containing the decoded data
      */
-    static byte[] getData(List<String> addressList, int length) throws BitcoinDataNotMatchingLengthException {
+    static byte[] getData(List<String> addressList, int length) throws BitcoinDataNotMatchingLengthException, BitcoinInvalidAddressException {
         ByteBuffer byteBuffer = ByteBuffer.allocate(length);
         for (int i=0; i<addressList.size(); i++) {
+            byte[] address = Base58.decode(addressList.get(i));
+            ByteBuffer network = ByteBuffer.allocate(BitcoinUtils.NETWORK_SIZE);
+            network.put(address, 0, BitcoinUtils.NETWORK_SIZE);
             ByteBuffer data = ByteBuffer.allocate(BitcoinUtils.PAYLOAD_SIZE);
-            data.put(Base58.decode(addressList.get(i)), BitcoinUtils.NETWORK_SIZE, BitcoinUtils.PAYLOAD_SIZE);
-            int location = i * BitcoinUtils.PAYLOAD_SIZE;
-            if (location + BitcoinUtils.PAYLOAD_SIZE > length) {
-                byteBuffer.put(data.array(), 0, length - location);
-                return byteBuffer.array();
+            data.put(address, BitcoinUtils.NETWORK_SIZE, BitcoinUtils.PAYLOAD_SIZE);
+            ByteBuffer checksum = ByteBuffer.allocate(BitcoinUtils.CHECKSUM_SIZE);
+            checksum.put(address, BitcoinUtils.NETWORK_SIZE+BitcoinUtils.PAYLOAD_SIZE, BitcoinUtils.CHECKSUM_SIZE);
+            ByteBuffer calculatedHash = ByteBuffer.allocate(BitcoinUtils.CHECKSUM_SIZE);
+            byte hash[] = sha256(sha256(
+                    ByteBuffer
+                            .allocate(NETWORK_SIZE + PAYLOAD_SIZE)
+                            .put(network.array())
+                            .put(data.array())
+                            .array()
+            ));
+            if (null != hash) {
+                calculatedHash.put(hash, 0, BitcoinUtils.CHECKSUM_SIZE);
+                if (Arrays.compare(calculatedHash.array(), checksum.array()) == 0) {
+                    int location = i * BitcoinUtils.PAYLOAD_SIZE;
+                    if (location + BitcoinUtils.PAYLOAD_SIZE > length) {
+                        byteBuffer.put(data.array(), 0, length - location);
+                        return byteBuffer.array();
+                    } else {
+                        byteBuffer.put(data.array(),0, BitcoinUtils.PAYLOAD_SIZE);
+                    }
+                } else {
+                    throw new BitcoinInvalidAddressException(addressList.get(i));
+                }
             } else {
-                byteBuffer.put(data.array(),0, BitcoinUtils.PAYLOAD_SIZE);
+                throw new BitcoinInvalidAddressException(addressList.get(i));
             }
         }
         throw new BitcoinDataNotMatchingLengthException();
