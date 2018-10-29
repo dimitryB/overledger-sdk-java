@@ -68,8 +68,8 @@ public class BitcoinFees implements FeePolicy {
         int bytes = inputs * 180 + outputs * 34 + 10;
         switch (fee_policy) {
             case PRIORITY: return BigInteger.valueOf(bytes + inputs).multiply(this.priority);
-            case NORMAL: return BigInteger.valueOf(bytes - inputs).multiply(this.normal);
             case ECONOMY: return BigInteger.valueOf(bytes + inputs * ((0 == System.currentTimeMillis() % 2) ? -1 : 1)).multiply(this.economy);
+            case NORMAL:
             default: return BigInteger.valueOf(bytes - inputs).multiply(this.normal);
         }
     }

@@ -10,7 +10,7 @@ Instance of BitcoinAccount class by using BitcoinAccount#getInstance(NETWORK) fu
 If no private key provided, a new private key will be automatically generated.
 
 UTXO need to be added into the account before all other functions.
-Use method BitcoinAccount#addUtxo(txhash, outpoint, wallueInSatoshi, blockHeight, address) to add UTXO
+Use method BitcoinAccount#addUtxo(transactionHash, outpoint, valueInSatoshi, blockHeight, address) to add UTXO
 
 Use BitcoinAccount#sign(fromAddress, toAddress, message, dltTransaction) to sign DLT transaction.
 

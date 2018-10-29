@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.math.BigDecimal;
 
 /**
- * Experimental class for helping developer use Overleder Bitcoin faucet
+ * Experimental class for helping developers use Overledger Bitcoin faucet
  */
 public class BitcoinFaucetHelper {
 
@@ -25,7 +25,7 @@ public class BitcoinFaucetHelper {
     }
 
     /**
-     * Found given BitcoinAccount with 1 BTC
+     * Fund given BitcoinAccount with 1 BTC
      * @param bitcoinAccount BitcoinAccount containing the bitcoin account
      */
     public void fundAccount(BitcoinAccount bitcoinAccount) {

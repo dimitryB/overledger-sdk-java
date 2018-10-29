@@ -58,23 +58,18 @@ public class BitcoinAccount implements Account {
 
     private BitcoinData createBitcoinData(Object data, DATA_TYPE type) throws DataOverSizeException, IOException {
         switch (this.networkParameters.getAddressHeader()) {
-            case MAIN_ADDR:
-                if (data instanceof InputStream) {
-                    return new BitcoinData(NETWORK.MAIN, (InputStream)data, type, this.encryptor, this.compressor);
-                } else {
-                    return new BitcoinData(NETWORK.MAIN, (byte[])data, type, this.encryptor, this.compressor);
-                }
             case TEST_ADDR:
                 if (data instanceof InputStream) {
                     return new BitcoinData(NETWORK.TEST, (InputStream)data, type, this.encryptor, this.compressor);
                 } else {
                     return new BitcoinData(NETWORK.TEST, (byte[])data, type, this.encryptor, this.compressor);
                 }
+            case MAIN_ADDR:
             default:
                 if (data instanceof InputStream) {
-                    return new BitcoinData(NETWORK.TEST, (InputStream)data, type, this.encryptor, this.compressor);
+                    return new BitcoinData(NETWORK.MAIN, (InputStream)data, type, this.encryptor, this.compressor);
                 } else {
-                    return new BitcoinData(NETWORK.TEST, (byte[])data, type, this.encryptor, this.compressor);
+                    return new BitcoinData(NETWORK.MAIN, (byte[])data, type, this.encryptor, this.compressor);
                 }
         }
     }

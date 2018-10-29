@@ -8,6 +8,8 @@ import network.quant.exception.NetworkNotMatchException;
 import network.quant.exception.UnknownDataException;
 import lombok.Getter;
 import org.bitcoinj.core.Base58;
+
+import javax.xml.bind.DatatypeConverter;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -102,7 +104,13 @@ class BitcoinHeader {
         if (bytes[0] == this.network.getAddressType()) {
             byte data[] = dataBuffer.array();
             ByteBuffer hashBuffer = ByteBuffer.allocate(BitcoinUtils.CHECKSUM_SIZE);
-            byte hash[] = BitcoinUtils.sha256(BitcoinUtils.sha256(data));
+            byte hash[] = BitcoinUtils.sha256(BitcoinUtils.sha256(
+                    ByteBuffer
+                            .allocate(BitcoinUtils.NETWORK_SIZE + BitcoinUtils.PAYLOAD_SIZE)
+                            .put((byte)network.getAddressType())
+                            .put(data)
+                            .array()
+            ));
             if (null == hash) {
                 return;
             }

@@ -2,8 +2,8 @@ package network.quant.bitcoin;
 
 import network.quant.api.NETWORK;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
 import org.bitcoinj.core.Base58;
-
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Utility class for process Bitcoin data
+ * Utility class for processing Bitcoin data
  */
 @Slf4j
 public class BitcoinUtils {
@@ -54,7 +54,7 @@ public class BitcoinUtils {
     }
 
     /**
-     * Enocde 20 bytes data into a single Bitcoin address
+     * Encode 20 bytes data into a single Bitcoin address
      * @param network NETWORK containing network address
      * @param bytes byte array containing the original data
      * @return byte array containing the encoded address byte array
@@ -99,20 +99,24 @@ public class BitcoinUtils {
 
     /**
      * Decode list of data address to data
-     * @param addrList String list containing list of Bitcoin address that contains data
+     * @param addressList String list containing list of Bitcoin address that contains data
+     * @param length int containing expected data length
      * @return byte array containing the decoded data
      */
-    public static byte[] getData(List<String> addrList) {
-        byte result[] = new byte[addrList.size() * PAYLOAD_SIZE];
-        int from = 0;
-        for (String addr : addrList) {
-            byte addrBytes[] = Base58.decode(addr);
-            byte payload[] = new byte[PAYLOAD_SIZE];
-            System.arraycopy(addrBytes, NETWORK_SIZE, payload, 0, PAYLOAD_SIZE);
-            System.arraycopy(payload, 0, result, from, PAYLOAD_SIZE);
-            from += PAYLOAD_SIZE;
+    static byte[] getData(List<String> addressList, int length) throws BitcoinDataNotMatchingLengthException {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(length);
+        for (int i=0; i<addressList.size(); i++) {
+            ByteBuffer data = ByteBuffer.allocate(BitcoinUtils.PAYLOAD_SIZE);
+            data.put(Base58.decode(addressList.get(i)), BitcoinUtils.NETWORK_SIZE, BitcoinUtils.PAYLOAD_SIZE);
+            int location = i * BitcoinUtils.PAYLOAD_SIZE;
+            if (location + BitcoinUtils.PAYLOAD_SIZE > length) {
+                byteBuffer.put(data.array(), 0, length - location);
+                return byteBuffer.array();
+            } else {
+                byteBuffer.put(data.array(),0, BitcoinUtils.PAYLOAD_SIZE);
+            }
         }
-        return result;
+        throw new BitcoinDataNotMatchingLengthException();
     }
 
 }

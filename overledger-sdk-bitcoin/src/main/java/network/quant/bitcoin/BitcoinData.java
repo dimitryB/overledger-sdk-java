@@ -1,14 +1,13 @@
 package network.quant.bitcoin;
 
 import network.quant.api.*;
+import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
 import network.quant.exception.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import network.quant.util.CommonUtil;
-import org.bitcoinj.core.Base58;
 import java.io.*;
-import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
@@ -36,8 +35,9 @@ public class BitcoinData {
      * @throws AddressChecksumNotMatchException throw when address checksum failed
      * @throws NetworkNotMatchException throw when network address does not match actual address
      * @throws DataNotFoundException throw when no Quant message not found
+     * @throws BitcoinDataNotMatchingLengthException throw when cannot parse address list into data
      */
-    public BitcoinData(NETWORK network, List<String> addressList, Encryptor encryptor, Compressor compressor) throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException {
+    public BitcoinData(NETWORK network, List<String> addressList, Encryptor encryptor, Compressor compressor) throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException, BitcoinDataNotMatchingLengthException {
         this.network = network;
         this.addressList = addressList;
         this.encryptor = encryptor;
@@ -102,23 +102,12 @@ public class BitcoinData {
         this.setAddressList();
     }
 
-    private void setData() throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException {
+    private void setData() throws UnknownDataException, AddressChecksumNotMatchException, NetworkNotMatchException, DataNotFoundException, BitcoinDataNotMatchingLengthException {
         if (this.addressList.size() < 2) {
             throw new DataNotFoundException();
         } else {
             BitcoinHeader bitcoinHeader = new BitcoinHeader(this.network, this.addressList.remove(0));
-            int length = Math.toIntExact(bitcoinHeader.getLength());
-            ByteBuffer byteBuffer = ByteBuffer.allocate(length);
-            for (int i=0; i<this.addressList.size(); i++) {
-                ByteBuffer data = ByteBuffer.allocate(BitcoinUtils.PAYLOAD_SIZE);
-                data.put(Base58.decode(this.addressList.get(i)), BitcoinUtils.NETWORK_SIZE, BitcoinUtils.PAYLOAD_SIZE);
-                int location = i * BitcoinUtils.PAYLOAD_SIZE;
-                byteBuffer.put(
-                        data.array(),
-                        0,
-                        location + BitcoinUtils.PAYLOAD_SIZE > length ? (length - location) : BitcoinUtils.PAYLOAD_SIZE);
-            }
-            this.data = byteBuffer.array();
+            this.data = BitcoinUtils.getData(this.addressList, Math.toIntExact(bitcoinHeader.getLength()));
         }
     }
 
