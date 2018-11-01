@@ -11,7 +11,11 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.util.CommonUtil;
+
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,6 +68,14 @@ public class RippleAccount implements Account {
         dltTransaction.setSignedTransaction(signedTransaction.tx_blob);
     }
 
+    public String getPublicKey() {
+        if (null != this.seed) {
+            AccountID accountID = AccountID.fromKeyPair(this.seed.keyPair());
+            return accountID.address;
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public Account withNetwork(NETWORK network) {
@@ -110,6 +122,29 @@ public class RippleAccount implements Account {
         }
     }
 
+    @Override
+    public void sign(String fromAddress, String toAddress, InputStream stream, DltTransaction dltTransaction) {
+        if (dltTransaction instanceof DltTransactionRequest) {
+            byte data[];
+            try {
+                data = CommonUtil.getStream(stream);
+            } catch (IOException e) {
+                log.error("Unalbe to read data from given stream", e);
+                return;
+            }
+            String message = DatatypeConverter.printHexBinary(data);
+            if (null == this.encryptor) {
+                data = this.encryptor.encrypt(data);
+                message = DatatypeConverter.printHexBinary(data);
+            }
+            if (null == this.compressor) {
+                data = this.compressor.compress(data);
+                message = DatatypeConverter.printHexBinary(data);
+            }
+            this.sign(fromAddress, toAddress, message, (DltTransactionRequest)dltTransaction);
+        }
+    }
+
     public static Account getInstance(String secretKey, Encryptor encryptor, Compressor compressor) {
         if (null == I) {
             I = new RippleAccount(secretKey);
@@ -119,6 +154,10 @@ public class RippleAccount implements Account {
         return I;
     }
 
+    public static Account getInstance(String secretKey) {
+        return getInstance(secretKey, null, null);
+    }
+
     public static Account getInstance(Encryptor encryptor, Compressor compressor) {
         if (null == I) {
             I = new RippleAccount();
@@ -126,6 +165,10 @@ public class RippleAccount implements Account {
         I.encryptor = encryptor;
         I.compressor = compressor;
         return I;
+    }
+
+    public static Account getInstance() {
+        return getInstance(null, null);
     }
 
 }

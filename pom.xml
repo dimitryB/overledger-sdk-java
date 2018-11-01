@@ -68,6 +68,7 @@
         <module>overledger-sdk-ethereum</module>
         <module>overledger-sdk-ripple</module>
         <module>overledger-sdk-bundle</module>
+        <module>overledger-sdk-example</module>
     </modules>
 
     <properties>
@@ -86,6 +87,7 @@
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.activation>1.1.1</jaxb.activation>
         <eddsa.version>0.3.0</eddsa.version>
+        <json.version>20180813</json.version>
         <junit.jupiter.version>5.1.0</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <assertj.version>3.11.1</assertj.version>
@@ -174,6 +176,11 @@
                 <version>${eddsa.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit.jupiter.version}</version>
@@ -243,6 +250,11 @@
             <dependency>
                 <groupId>network.quant</groupId>
                 <artifactId>overledger-sdk-ripple</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>network.quant</groupId>
+                <artifactId>overledger-sdk-bundle</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

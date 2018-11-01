@@ -1,5 +1,6 @@
 package network.quant.api;
 
+import java.io.InputStream;
 import java.math.BigInteger;
 
 /**
@@ -44,5 +45,14 @@ public interface Account {
      * @param dltTransaction DltTransaction containing the original transaction
      */
     void sign(String fromAddress, String toAddress, byte[] message, DltTransaction dltTransaction);
+
+    /**
+     * Sign given transaction, update DltTransaction with signedTransaction field/property
+     * @param fromAddress String containing From address
+     * @param toAddress String containing To address
+     * @param message InputStream containing the message stream
+     * @param dltTransaction DltTransaction containing the original transaction
+     */
+    void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction);
 
 }

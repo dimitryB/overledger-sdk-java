@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.io.InputStream;
 import java.math.BigInteger;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -40,6 +42,8 @@ public class AccountManagerTest {
             public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {}
             @Override
             public void sign(String fromAddress, String toAddress, byte[] message, DltTransaction dltTransaction) {}
+            @Override
+            public void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction) {}
         };
     }
 

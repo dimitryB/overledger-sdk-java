@@ -5,9 +5,12 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.util.CommonUtil;
 import org.web3j.crypto.*;
 import org.web3j.utils.Numeric;
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.Optional;
 
@@ -110,6 +113,29 @@ public class EthereumAccount implements Account {
         }
     }
 
+    @Override
+    public void sign(String fromAddress, String toAddress, InputStream stream, DltTransaction dltTransaction) {
+        if (dltTransaction instanceof DltTransactionRequest) {
+            byte data[];
+            try {
+                data = CommonUtil.getStream(stream);
+            } catch (IOException e) {
+                log.error("Unalbe to read data from given stream", e);
+                return;
+            }
+            String message = DatatypeConverter.printHexBinary(data);
+            if (null == this.encryptor) {
+                data = this.encryptor.encrypt(data);
+                message = DatatypeConverter.printHexBinary(data);
+            }
+            if (null == this.compressor) {
+                data = this.compressor.compress(data);
+                message = DatatypeConverter.printHexBinary(data);
+            }
+            this.sign(toAddress, message, (DltTransactionRequest)dltTransaction);
+        }
+    }
+
     /**
      * Create Ethereum wallet instance with new key
      * @param network NETWORK containing network param
@@ -121,6 +147,11 @@ public class EthereumAccount implements Account {
         I = new EthereumAccount(network);
         I.encryptor = encryptor;
         I.compressor = compressor;
+        return I;
+    }
+
+    public static Account getInstance(NETWORK network) throws Exception {
+        I = new EthereumAccount(network);
         return I;
     }
 
@@ -139,6 +170,10 @@ public class EthereumAccount implements Account {
         return I;
     }
 
+    public static Account getInstance(NETWORK network, BigInteger privateKey, BigInteger nonce) {
+        return getInstance(network, privateKey, nonce, null, null);
+    }
+
     /**
      * Get Ethereum wallet instance by given secret key array
      * @param network NETWORK containing network param
@@ -154,6 +189,10 @@ public class EthereumAccount implements Account {
         return I;
     }
 
+    public static Account getInstance(NETWORK network, byte privateKey[], BigInteger nonce) {
+        return getInstance(network, privateKey, nonce, null, null);
+    }
+
     /**
      * Get Ethereum wallet instance by given secret key object
      * @param network NETWORK containing network param
@@ -167,6 +206,10 @@ public class EthereumAccount implements Account {
         I.encryptor = encryptor;
         I.compressor = compressor;
         return I;
+    }
+
+    public static Account getInstance(NETWORK network, ECKeyPair privateKey, BigInteger nonce) {
+        return getInstance(network, privateKey, nonce, null, null);
     }
 
 }

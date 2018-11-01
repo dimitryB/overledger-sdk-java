@@ -1,6 +1,8 @@
 package network.quant.essential;
 
 import network.quant.api.*;
+import network.quant.essential.dto.DltBytesTransactionRequest;
+import network.quant.essential.dto.DltStreamTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.essential.exception.DltNotSupportedException;
@@ -87,12 +89,28 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
             ovlTransaction.getDltData().stream()
                     .map(dltTransaction -> (DltTransactionRequest)dltTransaction)
                     .map(dltTransactionRequest -> {
-                        this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
-                                dltTransactionRequest.getFromAddress(),
-                                dltTransactionRequest.getToAddress(),
-                                dltTransactionRequest.getMessage(),
-                                dltTransactionRequest
-                        );
+                        if (dltTransactionRequest instanceof DltStreamTransactionRequest) {
+                            this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
+                                    dltTransactionRequest.getFromAddress(),
+                                    dltTransactionRequest.getToAddress(),
+                                    ((DltStreamTransactionRequest)dltTransactionRequest).getInputStream(),
+                                    dltTransactionRequest
+                            );
+                        } else if (dltTransactionRequest instanceof DltBytesTransactionRequest) {
+                            this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
+                                    dltTransactionRequest.getFromAddress(),
+                                    dltTransactionRequest.getToAddress(),
+                                    ((DltBytesTransactionRequest)dltTransactionRequest).getBytes(),
+                                    dltTransactionRequest
+                            );
+                        } else {
+                            this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
+                                    dltTransactionRequest.getFromAddress(),
+                                    dltTransactionRequest.getToAddress(),
+                                    dltTransactionRequest.getMessage(),
+                                    dltTransactionRequest
+                            );
+                        }
                         return dltTransactionRequest;
                     }).collect(Collectors.toList());
             overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>overledger-sdk-java</artifactId>
+        <groupId>network.quant</groupId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>overledger-sdk-example</artifactId>
+
+    <name>overledger-sdk-example</name>
+    <description>OverLedger SDK For Java Example</description>
+    <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-example</url>
+
+    <organization>
+        <url>https://quant.network</url>
+        <name>Quant Network</name>
+    </organization>
+
+    <inceptionYear>2018</inceptionYear>
+
+    <developers>
+        <developer>
+            <name>Rui Wang</name>
+            <email>rui.wang@quant.network</email>
+            <organization>Quant Network</organization>
+            <organizationUrl>https://quant.network</organizationUrl>
+            <timezone>UTC+00:00</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>network.quant</groupId>
+            <artifactId>overledger-sdk-bundle</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
