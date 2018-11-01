@@ -1,4 +1,4 @@
-# overledger-sdk-ripple-java
+# overledger-sdk-ripple
 
 This module implements Account specifically for Ripple blockchain
 
