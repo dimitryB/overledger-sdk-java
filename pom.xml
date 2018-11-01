@@ -67,6 +67,7 @@
         <module>overledger-sdk-bitcoin</module>
         <module>overledger-sdk-ethereum</module>
         <module>overledger-sdk-ripple</module>
+        <module>overledger-sdk-bundle</module>
     </modules>
 
     <properties>
@@ -84,6 +85,7 @@
         <jaxb.version>2.3.1</jaxb.version>
         <jaxb.core.version>2.3.0.1</jaxb.core.version>
         <jaxb.activation>1.1.1</jaxb.activation>
+        <eddsa.version>0.3.0</eddsa.version>
         <junit.jupiter.version>5.1.0</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <assertj.version>3.11.1</assertj.version>
@@ -166,8 +168,11 @@
                 <artifactId>activation</artifactId>
                 <version>${jaxb.activation}</version>
             </dependency>
-
-
+            <dependency>
+                <groupId>net.i2p.crypto</groupId>
+                <artifactId>eddsa</artifactId>
+                <version>${eddsa.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
@@ -237,12 +242,7 @@
             </dependency>
             <dependency>
                 <groupId>network.quant</groupId>
-                <artifactId>overledger-ripple-lite</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>network.quant</groupId>
-                <artifactId>overledger-sdk-ripple-java</artifactId>
+                <artifactId>overledger-sdk-ripple</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
