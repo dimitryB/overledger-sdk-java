@@ -67,6 +67,7 @@
         <module>overledger-sdk-bitcoin</module>
         <module>overledger-sdk-ethereum</module>
         <module>overledger-sdk-ripple</module>
+        <module>overledger-sdk-bundle</module>
     </modules>
 
     <properties>
