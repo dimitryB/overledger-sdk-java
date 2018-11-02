@@ -12,7 +12,7 @@
 
     <artifactId>overledger-sdk-essential</artifactId>
 
-    <name>overledger-sdk-essential</name>
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>OverLedger SDK For Java API Essential</description>
     <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-essential</url>
 
@@ -45,6 +45,22 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
         </dependency>
         <dependency>
             <groupId>network.quant</groupId>

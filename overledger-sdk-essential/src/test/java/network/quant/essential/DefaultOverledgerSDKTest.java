@@ -15,6 +15,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +61,8 @@ public class DefaultOverledgerSDKTest {
             public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {}
             @Override
             public void sign(String fromAddress, String toAddress, byte[] message, DltTransaction dltTransaction) {}
+            @Override
+            public void sign(String fromAddress, String toAddress, InputStream message, DltTransaction dltTransaction) {}
         };
     }
 

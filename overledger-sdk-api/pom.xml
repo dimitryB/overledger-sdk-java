@@ -11,7 +11,7 @@
 
     <artifactId>overledger-sdk-api</artifactId>
 
-    <name>overledger-sdk-api</name>
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>OverLedger SDK For Java API</description>
     <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-api</url>
 

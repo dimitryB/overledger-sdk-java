@@ -5,6 +5,6 @@ package network.quant.api;
  */
 public enum DLT {
 
-    bitcoin, ehereum, ripple
+    bitcoin, ethereum, ripple
 
 }

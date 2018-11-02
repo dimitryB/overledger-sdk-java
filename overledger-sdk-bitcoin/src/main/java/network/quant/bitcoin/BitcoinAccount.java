@@ -147,6 +147,7 @@ public class BitcoinAccount implements Account {
         }
     }
 
+    @Override
     public void sign(String fromAddress, String toAddress, InputStream stream, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
             this.sign(fromAddress, toAddress, stream, DATA_TYPE.BYTE, (DltTransactionRequest)dltTransaction);
@@ -212,6 +213,10 @@ public class BitcoinAccount implements Account {
         return I;
     }
 
+    public static Account getInstance(NETWORK network) {
+        return getInstance(network, null, null);
+    }
+
     /**
      * Get Bitcoin account instance by given secret key number
      * @param network NETWORK containing network param
@@ -225,6 +230,10 @@ public class BitcoinAccount implements Account {
         I.setEncryptor(encryptor);
         I.setCompressor(compressor);
         return I;
+    }
+
+    public static Account getInstance(NETWORK network, BigInteger privateKey) {
+        return getInstance(network, privateKey);
     }
 
     /**
@@ -242,6 +251,10 @@ public class BitcoinAccount implements Account {
         return I;
     }
 
+    public static Account getInstance(NETWORK network, byte privateKey[]) {
+        return getInstance(network, privateKey);
+    }
+
     /**
      * Get Bitcoin account instance by given secret key object
      * @param network NETWORK containing network param
@@ -255,6 +268,10 @@ public class BitcoinAccount implements Account {
         I.setEncryptor(encryptor);
         I.setCompressor(compressor);
         return I;
+    }
+
+    public static Account getInstance(NETWORK network, ECKey privateKey) {
+        return getInstance(network, privateKey);
     }
 
 }
