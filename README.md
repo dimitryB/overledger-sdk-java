@@ -1,6 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/network.quant/overledger-sdk-java/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/network.quant/overledger-sdk-java)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/network.quant/overledger-sdk-java/badge.svg)](https://maven-badges.herokuapp.com/maven-central/network.quant/overledger-sdk-java)
 
 # Overledger Java SDK
 
