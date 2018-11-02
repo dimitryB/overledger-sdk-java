@@ -11,7 +11,7 @@
 
     <artifactId>overledger-sdk-bitcoin</artifactId>
 
-    <name>overledger-sdk-bitcoin</name>
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>OverLedger SDK For Java API</description>
     <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-bitcoin</url>
 

@@ -177,6 +177,15 @@ public class OverledgerSDKHelper {
                         bitcoinAccount.getKey().toAddress(bitcoinAccount.getNetworkParameters()).toBase58()
                 );
                 break;
+            case "xrp":
+                RippleAccount rippleAccount = (RippleAccount)RippleAccount.getInstance();
+                this.rippleAccount = rippleAccount;
+                this.applicationDataHandler.onAccountGenerated(
+                        type,
+                        rippleAccount.getPrivateKeyAsString(),
+                        rippleAccount.getPublicKey()
+                );
+                break;
         }
     }
 
@@ -242,6 +251,7 @@ public class OverledgerSDKHelper {
                     log.error("Fail to write transaction to DLTs", e);
                 }
             } else {
+                e.printStackTrace();
                 log.error("Fail to write transaction to DLTs", e);
                 this.applicationDataHandler.onPurchaseFailed("Fail to write transaction to DLTs");
             }

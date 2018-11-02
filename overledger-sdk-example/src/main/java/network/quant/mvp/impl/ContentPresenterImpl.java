@@ -70,6 +70,9 @@ public class ContentPresenterImpl implements ContentPresenter {
             } else if (type.equals(WalletComponent.TYPE.eth.name())) {
                 walletPanel.ethereumWallet.secretKey.setText(secretKey);
                 walletPanel.ethereumWallet.publicAddress.setText(address);
+            } else if (type.equals(WalletComponent.TYPE.xrp.name())) {
+                walletPanel.rippleWallet.secretKey.setText(secretKey);
+                walletPanel.rippleWallet.publicAddress.setText(address);
             }
         }
     }

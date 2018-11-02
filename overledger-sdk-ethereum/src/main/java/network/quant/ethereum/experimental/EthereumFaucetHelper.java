@@ -7,6 +7,8 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.web3j.crypto.Credentials;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
@@ -29,8 +31,8 @@ public class EthereumFaucetHelper {
     public void fundAccount(EthereumAccount ethereumAccount) {
         String address = Credentials.create(ethereumAccount.getEcKeyPair()).getAddress();
         this.webClient
-                .get()
-                .uri(this.url, address)
+                .post()
+                .uri(this.url, address, new BigDecimal("1000000000000000000"))
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
                         .bodyToMono(ByteArrayResource.class)

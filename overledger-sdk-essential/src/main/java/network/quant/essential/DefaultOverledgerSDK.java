@@ -1,5 +1,6 @@
 package network.quant.essential;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import network.quant.api.*;
 import network.quant.essential.dto.DltBytesTransactionRequest;
 import network.quant.essential.dto.DltStreamTransactionRequest;
@@ -86,23 +87,27 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         }
         OverledgerTransaction overledgerTransaction = null;
         try {
-            ovlTransaction.getDltData().stream()
+            List<DltTransactionRequest> dltTransactionRequestList = ovlTransaction.getDltData().stream()
                     .map(dltTransaction -> (DltTransactionRequest)dltTransaction)
                     .map(dltTransactionRequest -> {
                         if (dltTransactionRequest instanceof DltStreamTransactionRequest) {
+                            network.quant.essential.dto.DltTransactionRequest dtr = ((DltStreamTransactionRequest) dltTransactionRequest).asDltTransactionRequest();
                             this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
                                     dltTransactionRequest.getFromAddress(),
                                     dltTransactionRequest.getToAddress(),
-                                    ((DltStreamTransactionRequest)dltTransactionRequest).getInputStream(),
-                                    dltTransactionRequest
+                                    ((DltStreamTransactionRequest) dltTransactionRequest).getInputStream(),
+                                    dtr
                             );
+                            dltTransactionRequest = dtr;
                         } else if (dltTransactionRequest instanceof DltBytesTransactionRequest) {
+                            network.quant.essential.dto.DltTransactionRequest dtr = ((DltBytesTransactionRequest) dltTransactionRequest).asDltTransactionRequest();
                             this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
                                     dltTransactionRequest.getFromAddress(),
                                     dltTransactionRequest.getToAddress(),
-                                    ((DltBytesTransactionRequest)dltTransactionRequest).getBytes(),
-                                    dltTransactionRequest
+                                    ((DltBytesTransactionRequest) dltTransactionRequest).getBytes(),
+                                    dtr
                             );
+                            dltTransactionRequest = dtr;
                         } else {
                             this.accountManager.getAccount(dltTransactionRequest.getDlt()).sign(
                                     dltTransactionRequest.getFromAddress(),
@@ -113,6 +118,12 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
                         }
                         return dltTransactionRequest;
                     }).collect(Collectors.toList());
+            ovlTransaction.getDltData().clear();
+            ovlTransaction.getDltData().addAll(dltTransactionRequestList);
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            System.out.println(objectMapper.writeValueAsString(ovlTransaction));
+            System.out.println("#######");
             overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
         } catch (Exception e) {
             this.throwCauseException(e);

@@ -78,9 +78,7 @@ public class WalletComponent extends BaseComponent {
         this.generateButton.addActionListener((event) -> {
             this.walletHandler.generate(type);
         });
-        if (!type.equals(TYPE.xrp)) {
-            this.add(this.generateButton, componentIndex++);
-        }
+        this.add(this.generateButton, componentIndex++);
 
         this.receiveButton.setSize(150, 50);
         this.receiveButton.setLocation(dimension.width - 150, dimension.height - 50);

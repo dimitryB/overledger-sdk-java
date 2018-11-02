@@ -11,7 +11,7 @@
 
     <artifactId>overledger-sdk-example</artifactId>
 
-    <name>overledger-sdk-example</name>
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>OverLedger SDK For Java Example</description>
     <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-example</url>
 

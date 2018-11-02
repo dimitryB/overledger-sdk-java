@@ -77,6 +77,14 @@ public class RippleAccount implements Account {
         }
     }
 
+    public String getPrivateKeyAsString() {
+        if (null != this.seed) {
+            return this.seed.toString();
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public Account withNetwork(NETWORK network) {
         return this;
@@ -94,11 +102,11 @@ public class RippleAccount implements Account {
     public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
             byte data[] = message.getBytes();
-            if (null == this.encryptor) {
+            if (null != this.encryptor) {
                 data = this.encryptor.encrypt(data);
                 message = DatatypeConverter.printHexBinary(data);
             }
-            if (null == this.compressor) {
+            if (null != this.compressor) {
                 data = this.compressor.compress(data);
                 message = DatatypeConverter.printHexBinary(data);
             }
@@ -110,11 +118,11 @@ public class RippleAccount implements Account {
     public void sign(String fromAddress, String toAddress, byte[] data, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
             String message = DatatypeConverter.printHexBinary(data);
-            if (null == this.encryptor) {
+            if (null != this.encryptor) {
                 data = this.encryptor.encrypt(data);
                 message = DatatypeConverter.printHexBinary(data);
             }
-            if (null == this.compressor) {
+            if (null != this.compressor) {
                 data = this.compressor.compress(data);
                 message = DatatypeConverter.printHexBinary(data);
             }
@@ -133,11 +141,11 @@ public class RippleAccount implements Account {
                 return;
             }
             String message = DatatypeConverter.printHexBinary(data);
-            if (null == this.encryptor) {
+            if (null != this.encryptor) {
                 data = this.encryptor.encrypt(data);
                 message = DatatypeConverter.printHexBinary(data);
             }
-            if (null == this.compressor) {
+            if (null != this.compressor) {
                 data = this.compressor.compress(data);
                 message = DatatypeConverter.printHexBinary(data);
             }
