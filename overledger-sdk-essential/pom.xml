@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>overledger-sdk-java</artifactId>
+        <groupId>network.quant</groupId>
+        <version>1.0.0-alpha</version>
+    </parent>
+
+    <artifactId>overledger-sdk-essential</artifactId>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>OverLedger SDK For Java API Essential</description>
+    <url>https://github.com/quantnetwork/overledger-sdk-java/tree/master/overledger-sdk-essential</url>
+
+    <organization>
+        <url>https://quant.network</url>
+        <name>Quant Network</name>
+    </organization>
+
+    <inceptionYear>2018</inceptionYear>
+
+    <developers>
+        <developer>
+            <name>Rui Wang</name>
+            <email>rui.wang@quant.network</email>
+            <organization>Quant Network</organization>
+            <organizationUrl>https://quant.network</organizationUrl>
+            <timezone>UTC+00:00</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>network.quant</groupId>
+            <artifactId>overledger-sdk-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+        </dependency>
+    </dependencies>
+</project>
