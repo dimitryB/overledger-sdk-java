@@ -13,19 +13,19 @@ Run main method under [OverledgerEntryPoint](./src/network/quant/OverledgerEntry
 
 ## How to use example application
 
-![Main page](./docs/example_001.png)
+![Main page](../docs/example_001.png)
 
 From main page, you can access all options over the top right corner of the GUI
 
-![Settings page](./docs/example_002.png)
+![Settings page](../docs/example_002.png)
 
 In settings page, you can setup endpoints for BPI level access. Or you could load properties file by dragging file into this panel.
 
-![Wallet page](./docs/example_003.png)
+![Wallet page](../docs/example_003.png)
 
 In Wallet page, you can create or set your DLT acount/wallets, "Receive" button is ONLY used for receive test fund from Overledger development faucet.
 
-![Purchase page](./docs/example_004.png)
+![Purchase page](../docs/example_004.png)
  
 Go to purchase panel by clicking items at main page, from this page, you could modify transaction details, also you can drag a file into a marked area.
 Maximum accept file size is 50KB.
