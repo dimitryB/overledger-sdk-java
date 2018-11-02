@@ -1,5 +1,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/network.quant/overledger-sdk-java/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/network.quant/overledger-sdk-java)
+
 # Overledger Java SDK
 
 Developer's guide to use the Overledger SDK written in Java by Quant Network.
@@ -67,6 +69,16 @@ This module contains Ethereum implementation of Overledger Account API.
 #### [overledger-sdk-ripple](./overledger-sdk-ripple/README.md)
 
 This module contains Ripple implementation of Overledger Account API.
+
+#### [overledger-sdk-bundle](./overledger-sdk-bundle/README.md)
+
+This module bundles up API, essential, Bitcoin, Ethereum and Ripple modules.
+
+#### [overledger-sdk-example](./overledger-sdk-example/README.md)
+
+In example module, a Java Swing application is used to demonstrate usage of Overledger SDK for Java.
+
+![Example Application](./docs/example_004.png)
 
 ## Getting started
 
