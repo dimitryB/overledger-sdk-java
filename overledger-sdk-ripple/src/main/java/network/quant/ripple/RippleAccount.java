@@ -31,7 +31,7 @@ public class RippleAccount implements Account {
     private static final BigInteger XRP = BigInteger.valueOf(1000000L);
     private static final BigInteger MINIMUM = BigInteger.valueOf(20000000L);
     private static final BigInteger FEE = BigInteger.valueOf(12000000L);
-    private static final int LAST_INDEX = 0xFFFF;
+    private static final int LAST_INDEX = 0x7fffffff;
     private static RippleAccount I;
     private Seed seed;
     private Encryptor encryptor;
