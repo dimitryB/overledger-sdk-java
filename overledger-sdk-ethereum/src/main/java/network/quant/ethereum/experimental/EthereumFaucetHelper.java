@@ -1,9 +1,11 @@
 package network.quant.ethereum.experimental;
 
+import network.quant.OverledgerContext;
 import network.quant.ethereum.EthereumAccount;
 import network.quant.ethereum.experimental.dto.FaucetResponseDto;
 import network.quant.exception.ClientResponseException;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.web3j.crypto.Credentials;
@@ -16,12 +18,18 @@ import java.math.BigInteger;
  */
 public class EthereumFaucetHelper {
 
+    private static final String BEARER = "Bearer";
     private static EthereumFaucetHelper I;
     private WebClient webClient;
     private String url;
 
     private EthereumFaucetHelper() {
-        this.webClient = WebClient.create();
+        this.webClient = WebClient.builder()
+                .defaultHeader(
+                        HttpHeaders.AUTHORIZATION,
+                        String.format("%s %s:%s", BEARER, OverledgerContext.MAPP_ID, OverledgerContext.BPI_KEY)
+                )
+                .build();
     }
 
     /**

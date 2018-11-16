@@ -1,7 +1,9 @@
 package network.quant.ripple.experimental;
 
+import network.quant.OverledgerContext;
 import network.quant.exception.ClientResponseException;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,12 +14,18 @@ import java.math.BigDecimal;
  */
 public class RippleFaucetHelper {
 
+    private static final String BEARER = "Bearer";
     private static RippleFaucetHelper I;
     private WebClient webClient;
     private String url;
 
     private RippleFaucetHelper() {
-        this.webClient = WebClient.create();
+        this.webClient = WebClient.builder()
+                .defaultHeader(
+                        HttpHeaders.AUTHORIZATION,
+                        String.format("%s %s:%s", BEARER, OverledgerContext.MAPP_ID, OverledgerContext.BPI_KEY)
+                )
+                .build();
     }
 
     /**

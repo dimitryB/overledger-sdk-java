@@ -84,14 +84,17 @@ public class ContentPresenterImpl implements ContentPresenter {
 
     @Override
     public void loadOrders(List<OverledgerTransaction> readTransactions) {
-
+        OrderPanel orderPanel = this.contentView.getCurrentViewAsOrderPanel();
+        if (null != orderPanel) {
+            orderPanel.loadList(readTransactions);
+        }
     }
 
     @Override
     public void loadOrders(OverledgerTransactionResponse[] writeOverledgerTransactionResponses) {
         OrderPanel orderPanel = this.contentView.getCurrentViewAsOrderPanel();
         if (null != orderPanel) {
-            orderPanel.loadList(writeOverledgerTransactionResponses);
+            orderPanel.loadArray(writeOverledgerTransactionResponses);
         }
     }
 

@@ -1,9 +1,11 @@
 package network.quant.bitcoin.experimental;
 
+import network.quant.OverledgerContext;
 import network.quant.bitcoin.BitcoinAccount;
 import network.quant.bitcoin.experimental.Dto.FaucetResponseDto;
 import network.quant.exception.ClientResponseException;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,11 +19,17 @@ public class BitcoinFaucetHelper {
     private static BitcoinFaucetHelper I;
     private static final BigDecimal BTC_IN_SATOSHI = BigDecimal.valueOf(100000000L);
     private static final int ONE_BTC = 1;
+    private static final String BEARER = "Bearer";
     private WebClient webClient;
     private String url;
 
     private BitcoinFaucetHelper() {
-        this.webClient = WebClient.create();
+        this.webClient = WebClient.builder()
+                .defaultHeader(
+                        HttpHeaders.AUTHORIZATION,
+                        String.format("%s %s:%s", BEARER, OverledgerContext.MAPP_ID, OverledgerContext.BPI_KEY)
+                )
+                .build();
     }
 
     /**

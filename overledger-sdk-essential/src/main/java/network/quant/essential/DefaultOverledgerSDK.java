@@ -1,5 +1,6 @@
 package network.quant.essential;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import network.quant.api.*;
 import network.quant.essential.dto.DltBytesTransactionRequest;
 import network.quant.essential.dto.DltStreamTransactionRequest;
@@ -114,6 +115,9 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
                         return dltTransactionRequest;
                     }).collect(Collectors.toList());
             overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            System.out.println(objectMapper.writeValueAsString(overledgerTransaction));
         } catch (Exception e) {
             this.throwCauseException(e);
         }

@@ -233,7 +233,7 @@ public class BitcoinAccount implements Account {
     }
 
     public static Account getInstance(NETWORK network, BigInteger privateKey) {
-        return getInstance(network, privateKey);
+        return getInstance(network, privateKey, null, null);
     }
 
     /**
@@ -252,7 +252,7 @@ public class BitcoinAccount implements Account {
     }
 
     public static Account getInstance(NETWORK network, byte privateKey[]) {
-        return getInstance(network, privateKey);
+        return getInstance(network, privateKey, null, null);
     }
 
     /**
@@ -271,7 +271,7 @@ public class BitcoinAccount implements Account {
     }
 
     public static Account getInstance(NETWORK network, ECKey privateKey) {
-        return getInstance(network, privateKey);
+        return getInstance(network, privateKey, null, null);
     }
 
 }

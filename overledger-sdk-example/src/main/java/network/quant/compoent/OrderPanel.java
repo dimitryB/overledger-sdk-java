@@ -1,5 +1,6 @@
 package network.quant.compoent;
 
+import network.quant.api.OverledgerTransaction;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.mvp.presenter.ContentPresenter;
 import network.quant.utils.UITools;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -33,14 +35,24 @@ public class OrderPanel extends BaseComponent {
 
     }
 
-    public void loadList(OverledgerTransactionResponse[] writeOverledgerTransactionResponses) {
+    public void loadArray(OverledgerTransactionResponse[] writeOverledgerTransactionResponses) {
         int componentIndex = 1;
         for (int i=0; i<writeOverledgerTransactionResponses.length; i++) {
             Button button = new Button(writeOverledgerTransactionResponses[i].getOverledgerTransactionId().toString(), Button.TYPE.CANCEL);
             button.setSize(this.getSize().width-40, 32);
             button.setLocation(20, i * 40 + 80);
             this.add(button, componentIndex++);
-            System.out.println(writeOverledgerTransactionResponses[i]);
+        }
+    }
+
+    public void loadList(List<OverledgerTransaction> writeOverledgerTransactionResponses) {
+        int componentIndex = 1;
+        for (int i=0; i<writeOverledgerTransactionResponses.size(); i++) {
+            OverledgerTransactionResponse overledgerTransactionResponse = (OverledgerTransactionResponse)writeOverledgerTransactionResponses.get(i);
+            Button button = new Button(overledgerTransactionResponse.getOverledgerTransactionId().toString(), Button.TYPE.CANCEL);
+            button.setSize(this.getSize().width-40, 32);
+            button.setLocation(20, i * 40 + 80);
+            this.add(button, componentIndex++);
         }
     }
 

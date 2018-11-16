@@ -1,5 +1,6 @@
 package network.quant.essential;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import network.quant.OverledgerContext;
 import network.quant.api.Client;
@@ -15,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,19 +80,16 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                 .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
-                .bodyToFlux(String.class)
+                .bodyToMono(String.class)
                 .map(s -> {
-
-                    System.out.println(s);
                     ObjectMapper objectMapper = new ObjectMapper();
                     try {
-                        return objectMapper.readValue(s, responseClass);
+                        return (List<S>)objectMapper.readValue(s, new TypeReference<List<S>>() {});
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     return null;
                 })
-                .collectList()
                 .block();
     }
 
