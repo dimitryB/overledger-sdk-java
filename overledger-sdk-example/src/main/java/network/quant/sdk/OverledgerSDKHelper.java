@@ -22,10 +22,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.web3j.crypto.Credentials;
 import javax.xml.bind.DatatypeConverter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -53,6 +50,21 @@ public class OverledgerSDKHelper {
 
     private OverledgerSDKHelper(ApplicationDataHandler applicationDataHandler) {
         this.applicationDataHandler = applicationDataHandler;
+        this.loadContext(Thread.currentThread().getContextClassLoader().getResourceAsStream("context.properties"));
+    }
+
+    private void loadContext(InputStream stream) {
+        if (null != stream) {
+            try {
+                this.properties = new Properties();
+                this.properties.load(stream);
+                OverledgerContext.loadContext(this.properties);
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                log.error("Fail to load context file", e);
+            }
+        }
     }
 
     private OverledgerTransaction createOverledgerTransaction(BigDecimal payment, BigDecimal premium, BigDecimal annual, File contactFile, String policyId, String reg) throws FileNotFoundException {
