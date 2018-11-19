@@ -21,12 +21,16 @@ public class HeaderPanel extends BaseComponent implements HeaderView {
 
     private HeaderPanel() {
         super(new Dimension(1024, 82));
-        this.logo = Toolkit.getDefaultToolkit().getImage(
-                Thread.currentThread().getContextClassLoader().getResource("Quant-Logo.png")
-        );
-        this.subLogo = Toolkit.getDefaultToolkit().getImage(
-                Thread.currentThread().getContextClassLoader().getResource("Overledger-Logo.png")
-        );
+        try {
+            this.logo = Toolkit.getDefaultToolkit().getImage(
+                    Thread.currentThread().getContextClassLoader().getResource("Quant-Logo.png")
+            );
+            this.subLogo = Toolkit.getDefaultToolkit().getImage(
+                    Thread.currentThread().getContextClassLoader().getResource("Overledger-Logo.png")
+            );
+        } catch (Exception e) {
+            log.error(e.toString(), e);
+        }
 
         this.initialComponents();
     }
