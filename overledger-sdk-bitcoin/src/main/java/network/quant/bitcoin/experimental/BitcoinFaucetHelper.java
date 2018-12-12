@@ -6,6 +6,7 @@ import network.quant.bitcoin.BitcoinAccount;
 import network.quant.bitcoin.experimental.Dto.FaucetResponseDto;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
+import org.bitcoinj.params.RegTestParams;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -80,34 +81,36 @@ public class BitcoinFaucetHelper {
      * @param bitcoinAccount BitcoinAccount containing the bitcoin account
      */
     public void fundAccount(BitcoinAccount bitcoinAccount) {
-        try {
-            this.webClient
-                    .post()
-                    .uri(
-                            url,
-                            bitcoinAccount.getKey().toAddress(bitcoinAccount.getNetworkParameters()).toBase58(),
-                            ONE_BTC
-                    )
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .retrieve()
-                    .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
-                            .bodyToMono(ByteArrayResource.class)
-                            .map(ByteArrayResource::getByteArray)
-                            .map(String::new)
-                            .map(ClientResponseException::new)
-                    )
-                    .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
-                            .bodyToMono(ByteArrayResource.class)
-                            .map(ByteArrayResource::getByteArray)
-                            .map(String::new)
-                            .map(ClientResponseException::new)
-                    )
-                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header("Location").get(0))))
-                    .bodyToMono(String.class)
-                    .doOnSuccess(result -> this.addUtxo(bitcoinAccount, result))
-                    .block();
-        } catch (RedirectException e) {
-            this.redirectPost(bitcoinAccount, e.getUrl());
+        if (null != bitcoinAccount && RegTestParams.get().equals(bitcoinAccount.getNetworkParam())) {
+            try {
+                this.webClient
+                        .post()
+                        .uri(
+                                url,
+                                bitcoinAccount.getKey().toAddress(bitcoinAccount.getNetworkParameters()).toBase58(),
+                                ONE_BTC
+                        )
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .retrieve()
+                        .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
+                                .bodyToMono(ByteArrayResource.class)
+                                .map(ByteArrayResource::getByteArray)
+                                .map(String::new)
+                                .map(ClientResponseException::new)
+                        )
+                        .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
+                                .bodyToMono(ByteArrayResource.class)
+                                .map(ByteArrayResource::getByteArray)
+                                .map(String::new)
+                                .map(ClientResponseException::new)
+                        )
+                        .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header("Location").get(0))))
+                        .bodyToMono(String.class)
+                        .doOnSuccess(result -> this.addUtxo(bitcoinAccount, result))
+                        .block();
+            } catch (RedirectException e) {
+                this.redirectPost(bitcoinAccount, e.getUrl());
+            }
         }
     }
 

@@ -133,6 +133,14 @@ public class BitcoinAccount implements Account {
         return this.key.getPrivKey();
     }
 
+    public String getPrivateKeyAsWif() {
+        return this.key.getPrivateKeyAsWiF(this.networkParameters);
+    }
+
+    public NetworkParameters getNetworkParam() {
+        return this.networkParameters;
+    }
+
     @Override
     public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {

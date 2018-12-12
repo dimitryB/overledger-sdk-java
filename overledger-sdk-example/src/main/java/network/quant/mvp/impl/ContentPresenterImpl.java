@@ -151,8 +151,8 @@ public class ContentPresenterImpl implements ContentPresenter {
     }
 
     @Override
-    public void receive(String type, String secretKey, String address) {
-        this.overledgerSDKHelper.receive(type, secretKey, address);
+    public void receive(String type) {
+        this.overledgerSDKHelper.receive(type);
     }
 
     public static ContentPresenter newInstance(ContentView contentView, OverledgerSDKHelper overledgerSDKHelper) {

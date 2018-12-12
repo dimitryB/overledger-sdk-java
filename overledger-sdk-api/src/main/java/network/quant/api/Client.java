@@ -1,5 +1,10 @@
 package network.quant.api;
 
+import network.quant.util.Address;
+import network.quant.util.Page;
+import network.quant.util.PagedResult;
+import network.quant.util.Transaction;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +43,15 @@ public interface Client<T, S> {
     List<S> getTransactions(String mappId, Class<S> responseClass);
 
     /**
+     * Read transactions from BPI layer
+     * HTTP GET method to BPI layer
+     * @param mappId String containing Overledger Mapp ID
+     * @param  page Page containing paging information
+     * @return PagedResult containing actual response body
+     */
+    PagedResult getTransactions(String mappId, Page page);
+
+    /**
      * Read transaction from BPI layer
      * HTTP GET method to BPI layer
      * @param dlt String containing DLT type. e.g: bitcoin, ethereum, ripple. Make sure the DLT type is accepted by BPI
@@ -46,5 +60,23 @@ public interface Client<T, S> {
      * @return S containing actual response body
      */
     S getTransaction(String dlt, String transactionHash, Class<S> responseClass);
+
+    /**
+     * Search transaction base on transaction hash
+     * @param transactionHash String containing transaction hash
+     * @param responseClass Class containing response class
+     * @return Transaction containing the transaction
+     */
+    Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass);
+
+    /**
+     * Search address base on address string
+     * @param address String containing address
+     * @param responseClass Class containing response class
+     * @return Address containing the address
+     */
+    Address searchAddress(String address, Class<Address> responseClass);
+
+    void getLicenceCheck();
 
 }

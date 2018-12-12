@@ -2,20 +2,16 @@ package network.quant.essential;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import network.quant.api.*;
-import network.quant.essential.dto.DltBytesTransactionRequest;
-import network.quant.essential.dto.DltStreamTransactionRequest;
-import network.quant.essential.dto.OverledgerTransactionRequest;
-import network.quant.essential.dto.OverledgerTransactionResponse;
+import network.quant.api.DltTransactionRequest;
+import network.quant.essential.dto.*;
 import network.quant.essential.exception.DltNotSupportedException;
 import network.quant.essential.exception.EmptyAccountException;
 import network.quant.essential.exception.EmptyDltException;
 import network.quant.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
-import network.quant.util.CommonUtil;
+import network.quant.util.*;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,7 +22,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public final class DefaultOverledgerSDK implements OverledgerSDK {
 
-    private static final int KB = 1024;
     private NETWORK network;
     private AccountManager accountManager;
     private Client client;
@@ -147,6 +142,17 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     @Override
+    public PagedResult<OverledgerTransaction> readTransactions(String mappId, Page page) throws Exception {
+        PagedResult<OverledgerTransaction> pageResult = null;
+        try {
+            pageResult = this.client.getTransactions(mappId, page);
+        } catch (Exception e) {
+            this.throwCauseException(e);
+        }
+        return pageResult;
+    }
+
+    @Override
     public OverledgerTransaction readTransaction(String dlt, String transactionHash) throws Exception {
         OverledgerTransaction overledgerTransaction = null;
         try {
@@ -155,6 +161,16 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
             this.throwCauseException(e);
         }
         return overledgerTransaction;
+    }
+
+    @Override
+    public Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass) {
+        return this.client.searchTransaction(transactionHash, responseClass);
+    }
+
+    @Override
+    public Address searchAddress(String address, Class<Address> responseClass) {
+        return this.client.searchAddress(address, responseClass);
     }
 
     /**

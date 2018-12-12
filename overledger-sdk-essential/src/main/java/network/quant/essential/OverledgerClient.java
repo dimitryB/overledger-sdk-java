@@ -2,12 +2,17 @@ package network.quant.essential;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import network.quant.OverledgerContext;
 import network.quant.api.Client;
 import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
+import network.quant.util.Address;
+import network.quant.util.Page;
+import network.quant.util.PagedResult;
+import network.quant.util.Transaction;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,15 +20,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * Basic implementation of client
  */
+@Slf4j
 public final class OverledgerClient<T extends OverledgerTransactionRequest, S extends OverledgerTransactionResponse> implements Client<T, S> {
 
     private static Client I;
@@ -144,11 +148,108 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
+    public PagedResult getTransactions(String mappId, Page page) {
+        try {
+            return this.webClient
+                    .get()
+                    .uri(OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE, mappId, page.getPageNumber(), page.getPageSize())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(PagedResult.class)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .get()
+                    .uri(e.getUrl())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(PagedResult.class)
+                    .block();
+        }
+    }
+
+    @Override
     public S getTransaction(String dlt, String transactionHash, Class<S> responseClass) {
         try {
             return this.webClient
                     .get()
                     .uri(OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH, dlt, transactionHash)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(responseClass)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .get()
+                    .uri(e.getUrl())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(responseClass)
+                    .block();
+        }
+    }
+
+    @Override
+    public void getLicenceCheck() {
+        try {
+            this.webClient
+                    .get()
+                    .uri(OverledgerContext.LICENSE_CHECK)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (RedirectException e) {
+            this.webClient
+                    .get()
+                    .uri(e.getUrl())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(String.class)
+                    .block();
+        }
+    }
+
+    @Override
+    public Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass) {
+        try {
+            return this.webClient
+                    .get()
+                    .uri(OverledgerContext.SEARCH_TRANSACTIONS, transactionHash)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(responseClass)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .get()
+                    .uri(e.getUrl())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(responseClass)
+                    .block();
+        }
+    }
+
+    @Override
+    public Address searchAddress(String address, Class<Address> responseClass) {
+        try {
+            return this.webClient
+                    .get()
+                    .uri(OverledgerContext.SEARCH_ADDRESSES, address)
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)

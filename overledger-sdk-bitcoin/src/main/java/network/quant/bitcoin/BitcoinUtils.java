@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import network.quant.bitcoin.exception.BitcoinDataNotMatchingLengthException;
 import network.quant.bitcoin.exception.BitcoinInvalidAddressException;
 import org.bitcoinj.core.Base58;
-
-import javax.xml.bind.DatatypeConverter;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.ArrayList;

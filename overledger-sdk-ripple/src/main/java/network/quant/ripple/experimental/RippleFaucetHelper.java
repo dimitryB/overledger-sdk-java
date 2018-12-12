@@ -1,8 +1,10 @@
 package network.quant.ripple.experimental;
 
 import network.quant.OverledgerContext;
+import network.quant.api.NETWORK;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
+import network.quant.ripple.RippleAccount;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class RippleFaucetHelper {
                 .build();
     }
 
-    private void redirectPost(String address, String uri) {
+    private void redirectPost(RippleAccount rippleAccount, String uri, BigInteger nonce) {
         this.webClient
                 .post()
                 .uri(uri)
@@ -51,42 +53,54 @@ public class RippleFaucetHelper {
                         .map(ClientResponseException::new)
                 )
                 .bodyToMono(String.class)
-                .doOnSuccess(System.out::println)
+                .doOnSuccess(faucetResponse -> rippleAccount.setNonce(null != nonce?nonce:BigInteger.ONE))
                 .doOnError(RuntimeException::new)
                 .block();
     }
 
     /**
      * Fund Ripple address with given amount in XRP
-     * @param address String containing ripple address
+     * @param rippleAccount RippleAccount containing ripple account
+     * @param amount BigDecimal containing amount in XRP
+     * @param  nonce BitInteger containing current nonce of account
+     */
+    public void fundAccount(RippleAccount rippleAccount, BigDecimal amount, BigInteger nonce) {
+        if (null != rippleAccount && null != amount && NETWORK.TEST.equals(rippleAccount.getNetwork())) {
+            try {
+                this.webClient
+                        .post()
+                        .uri(this.url, rippleAccount.getPublicKey(), amount)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .retrieve()
+                        .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
+                                .bodyToMono(ByteArrayResource.class)
+                                .map(ByteArrayResource::getByteArray)
+                                .map(String::new)
+                                .map(ClientResponseException::new)
+                        )
+                        .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
+                                .bodyToMono(ByteArrayResource.class)
+                                .map(ByteArrayResource::getByteArray)
+                                .map(String::new)
+                                .map(ClientResponseException::new)
+                        )
+                        .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header("Location").get(0))))
+                        .bodyToMono(String.class)
+                        .doOnSuccess(faucetResponse -> rippleAccount.setNonce(null != nonce?nonce:BigInteger.ONE))
+                        .block();
+            } catch (RedirectException e) {
+                this.redirectPost(rippleAccount, e.getUrl(), nonce);
+            }
+        }
+    }
+
+    /**
+     * Fund Ripple address with given amount in XRP
+     * @param rippleAccount RippleAccount containing ripple account
      * @param amount BigDecimal containing amount in XRP
      */
-    public void fundAccount(String address, BigDecimal amount) {
-        try {
-            this.webClient
-                    .post()
-                    .uri(this.url, address, amount)
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .retrieve()
-                    .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse
-                            .bodyToMono(ByteArrayResource.class)
-                            .map(ByteArrayResource::getByteArray)
-                            .map(String::new)
-                            .map(ClientResponseException::new)
-                    )
-                    .onStatus(HttpStatus::is5xxServerError, clientResponse -> clientResponse
-                            .bodyToMono(ByteArrayResource.class)
-                            .map(ByteArrayResource::getByteArray)
-                            .map(String::new)
-                            .map(ClientResponseException::new)
-                    )
-                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header("Location").get(0))))
-                    .bodyToMono(String.class)
-                    .doOnSuccess(System.out::println)
-                    .block();
-        } catch (RedirectException e) {
-            this.redirectPost(address, e.getUrl());
-        }
+    public void fundAccount(RippleAccount rippleAccount, BigDecimal amount) {
+        this.fundAccount(rippleAccount, amount, BigInteger.ONE);
     }
 
     public static RippleFaucetHelper getInstance(String url) {

@@ -19,7 +19,7 @@ public interface ContentPresenter extends Presenter, ApplicationHistoryChangeHan
 
     void generate(String name);
 
-    void receive(String name, String secretKey, String address);
+    void receive(String name);
 
     void loadWallet(String type, String secretKey, String address);
 

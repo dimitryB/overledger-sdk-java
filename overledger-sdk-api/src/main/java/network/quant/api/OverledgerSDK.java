@@ -1,5 +1,10 @@
 package network.quant.api;
 
+import network.quant.util.Address;
+import network.quant.util.Page;
+import network.quant.util.PagedResult;
+import network.quant.util.Transaction;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +56,15 @@ public interface OverledgerSDK {
     List<OverledgerTransaction> readTransactions(String mappId) throws Exception;
 
     /**
+     * Read transactions from BPI layer base on Mapp ID
+     * @param mappId String containing Mapp ID
+     * @param  page Page containing page
+     * @return OverledgerTransaction containing response body from the call
+     * @throws Exception throw if connection between client and manager is broken
+     */
+    PagedResult<OverledgerTransaction> readTransactions(String mappId, Page page) throws Exception;
+
+    /**
      * Read transaction from BPI layer base on txHash and DLT
      * @param dlt String containing DLT type
      * @param transactionHash String containing txhash
@@ -58,5 +72,23 @@ public interface OverledgerSDK {
      * @throws Exception throw if connection between client and manager is broken
      */
     OverledgerTransaction readTransaction(String dlt, String transactionHash) throws Exception;
+
+    /**
+     * Search transaction from BPI layer base on txHash and DLT
+     * @param transactionHash String containing txhash
+     * @param responseClass Class containing response type
+     * @return Transaction containing transaction implementation
+     * @throws Exception throw if connection between client and manager is broken
+     */
+    Transaction searchTransaction(String transactionHash, Class<Transaction> responseClass) throws Exception;
+
+    /**
+     * Search address from BPI layer base on txHash and DLT
+     * @param address String containing address
+     * @param responseClass Class containing response type
+     * @return Address containing address implementation
+     * @throws Exception throw if connection between client and manager is broken
+     */
+    Address searchAddress(String address, Class<Address> responseClass);
 
 }

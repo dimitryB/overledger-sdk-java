@@ -33,15 +33,20 @@ public class RippleAccount implements Account {
     private static final BigInteger FEE = BigInteger.valueOf(12000000L);
     private static final int LAST_INDEX = 0x7fffffff;
     private static RippleAccount I;
-    private Seed seed;
-    private Encryptor encryptor;
-    private Compressor compressor;
+    Seed seed;
+    BigInteger nonce;
+    Encryptor encryptor;
+    Compressor compressor;
+    NETWORK network;
 
-    private RippleAccount(String secretKey) {
+    private RippleAccount(NETWORK network, String secretKey, BigInteger nonce) {
+        this.network = network;
         this.seed = Seed.fromBase58(secretKey);
     }
 
-    private RippleAccount() {
+    private RippleAccount(NETWORK network) {
+        this.network = network;
+        this.nonce = BigInteger.ONE;
         this.seed = Seed.fromPassPhrase(UUID.randomUUID().toString());
     }
 
@@ -60,12 +65,17 @@ public class RippleAccount implements Account {
         payment.as(AccountID.Account, fromAddress);
         payment.as(AccountID.Destination, toAddress);
         payment.as(Amount.Amount, dltTransaction.getAmount().toString());
-        payment.as(UInt32.Sequence, null == dltTransaction.getSequence()?1:dltTransaction.getSequence());
+        payment.as(UInt32.Sequence, null == dltTransaction.getSequence()?this.nonce:dltTransaction.getSequence());
         payment.as(Amount.Fee, Optional.ofNullable(dltTransaction.getFee()).orElse(FEE).toString());
         payment.as(UInt32.LastLedgerSequence, LAST_INDEX);
         this.setMemo(payment, message);
         SignedTransaction signedTransaction = payment.sign(this.seed.toString());
         dltTransaction.setSignedTransaction(signedTransaction.tx_blob);
+        this.nonce = this.nonce.add(BigInteger.ONE);
+    }
+
+    public NETWORK getNetwork() {
+        return this.network;
     }
 
     public String getPublicKey() {
@@ -153,30 +163,33 @@ public class RippleAccount implements Account {
         }
     }
 
-    public static Account getInstance(String secretKey, Encryptor encryptor, Compressor compressor) {
+    public static Account getInstance(NETWORK network, String secretKey, BigInteger nonce, Encryptor encryptor, Compressor compressor) {
         if (null == I) {
-            I = new RippleAccount(secretKey);
+            I = new RippleAccount(network, secretKey, nonce);
         }
         I.encryptor = encryptor;
         I.compressor = compressor;
         return I;
     }
 
-    public static Account getInstance(String secretKey) {
-        return getInstance(secretKey, null, null);
+    public static Account getInstance(NETWORK network, String secretKey, BigInteger nonce) {
+        return getInstance(network, secretKey, nonce, null, null);
     }
 
-    public static Account getInstance(Encryptor encryptor, Compressor compressor) {
+    public static Account getInstance(NETWORK network, Encryptor encryptor, Compressor compressor) {
         if (null == I) {
-            I = new RippleAccount();
+            I = new RippleAccount(network);
         }
         I.encryptor = encryptor;
         I.compressor = compressor;
         return I;
     }
 
-    public static Account getInstance() {
-        return getInstance(null, null);
+    public static Account getInstance(NETWORK network) {
+        if (null == I) {
+            I = new RippleAccount(network);
+        }
+        return I;
     }
 
 }

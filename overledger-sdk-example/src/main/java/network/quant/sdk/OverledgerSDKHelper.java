@@ -78,6 +78,7 @@ public class OverledgerSDKHelper {
         writeDltTransactionRequestBitcoin.setToAddress(BITCOIN_RECEIVE_ADDRESS);
         writeDltTransactionRequestBitcoin.setAmount(BTC.multiply(payment).toBigInteger());
         writeDltTransactionRequestBitcoin.setInputStream(new FileInputStream(contactFile));
+        writeDltTransactionRequestBitcoin.setMessage(contactFile.getName());
         writeOverledgerTransactionRequest.getDltData().add(writeDltTransactionRequestBitcoin);
 
         DltTransactionRequest writeDltTransactionRequestEthereum = new DltTransactionRequest();
@@ -190,7 +191,7 @@ public class OverledgerSDKHelper {
                 );
                 break;
             case "xrp":
-                RippleAccount rippleAccount = (RippleAccount)RippleAccount.getInstance();
+                RippleAccount rippleAccount = (RippleAccount)RippleAccount.getInstance(this.network);
                 this.rippleAccount = rippleAccount;
                 this.applicationDataHandler.onAccountGenerated(
                         type,
@@ -201,7 +202,7 @@ public class OverledgerSDKHelper {
         }
     }
 
-    public void receive(String type, String secretKey, String address) {
+    public void receive(String type) {
         switch (type) {
             case "eth":
                 if (null != this.ethereumAccount) {
@@ -220,13 +221,12 @@ public class OverledgerSDKHelper {
                 }
                 break;
             case "xrp":
-                if (null == this.rippleAccount) {
-                    this.rippleAccount = RippleAccount.getInstance(secretKey);
+                if (null != this.rippleAccount) {
+                    RippleFaucetHelper
+                            .getInstance(this.properties.getProperty("ripple.faucet.url"))
+                            .fundAccount((RippleAccount) this.rippleAccount, BigDecimal.valueOf(500L));
+                    this.applicationDataHandler.onAccountReceived(type, 500);
                 }
-                RippleFaucetHelper
-                        .getInstance(this.properties.getProperty("ripple.faucet.url"))
-                        .fundAccount(address, BigDecimal.valueOf(500L));
-                this.applicationDataHandler.onAccountReceived(type, 500);
                 break;
         }
     }

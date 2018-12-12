@@ -16,7 +16,7 @@ public class WalletComponent extends BaseComponent {
 
         void generate(TYPE type);
 
-        void receive(TYPE type, String secretKey, String address);
+        void receive(TYPE type);
 
     }
 
@@ -83,7 +83,7 @@ public class WalletComponent extends BaseComponent {
         this.receiveButton.setSize(150, 50);
         this.receiveButton.setLocation(dimension.width - 150, dimension.height - 50);
         this.receiveButton.addActionListener((event) -> {
-            this.walletHandler.receive(type, secretKey.getText(), publicAddress.getText());
+            this.walletHandler.receive(type);
         });
         this.add(this.receiveButton, componentIndex++);
     }

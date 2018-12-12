@@ -67,7 +67,7 @@ public class WalletPanel extends BaseComponent implements WalletComponent.Wallet
     }
 
     @Override
-    public void receive(WalletComponent.TYPE type, String secretKey, String address) {
-        this.contentPresenter.receive(type.name(), secretKey, address);
+    public void receive(WalletComponent.TYPE type) {
+        this.contentPresenter.receive(type.name());
     }
 }

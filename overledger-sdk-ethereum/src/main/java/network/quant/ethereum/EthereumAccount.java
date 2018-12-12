@@ -33,7 +33,7 @@ public class EthereumAccount implements Account {
     Compressor compressor;
 
     private EthereumAccount(NETWORK network) throws Exception {
-        this(network, Keys.createEcKeyPair(), new BigInteger("0"));
+        this(network, Keys.createEcKeyPair(), BigInteger.ZERO);
     }
 
     private EthereumAccount(NETWORK network, BigInteger privateKey, BigInteger nonce) {
@@ -63,6 +63,10 @@ public class EthereumAccount implements Account {
         byte transactionSignedBytes[] = TransactionEncoder.signMessage(rawTransaction, Credentials.create(this.ecKeyPair));
         dltTransaction.setSignedTransaction(Numeric.toHexString(transactionSignedBytes));
         this.nonce = this.nonce.add(BigInteger.ONE);
+    }
+
+    public NETWORK getNetwork() {
+        return this.network;
     }
 
     @Override
