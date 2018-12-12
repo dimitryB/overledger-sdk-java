@@ -21,6 +21,7 @@ import java.math.BigInteger;
 public class RippleFaucetHelper {
 
     private static final String BEARER = "Bearer";
+    private static final BigDecimal XRP = new BigDecimal("1000000");
     private static RippleFaucetHelper I;
     private WebClient webClient;
     private String url;
@@ -69,7 +70,7 @@ public class RippleFaucetHelper {
             try {
                 this.webClient
                         .post()
-                        .uri(this.url, rippleAccount.getPublicKey(), amount)
+                        .uri(this.url, rippleAccount.getPublicKey(), XRP.multiply(amount))
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .retrieve()
                         .onStatus(HttpStatus::is4xxClientError, clientResponse -> clientResponse

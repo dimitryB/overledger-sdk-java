@@ -1,9 +1,6 @@
 package network.quant.api;
 
-import network.quant.util.Address;
-import network.quant.util.Page;
-import network.quant.util.PagedResult;
-import network.quant.util.Transaction;
+import network.quant.util.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -76,6 +73,15 @@ public interface Client<T, S> {
      * @return Address containing the address
      */
     Address searchAddress(String address, Class<Address> responseClass);
+
+    /**
+     * Search address base on address string
+     * @param dlt String containing DLT type
+     * @param blockhash String containing block hash
+     * @param responseClass Class containing response class
+     * @return Block containing the block implementation
+     */
+    Block searchBlock(String dlt, String blockhash, Class<Block> responseClass);
 
     void getLicenceCheck();
 

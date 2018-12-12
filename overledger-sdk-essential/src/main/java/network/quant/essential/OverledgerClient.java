@@ -9,10 +9,7 @@ import network.quant.essential.dto.OverledgerTransactionRequest;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.exception.ClientResponseException;
 import network.quant.exception.RedirectException;
-import network.quant.util.Address;
-import network.quant.util.Page;
-import network.quant.util.PagedResult;
-import network.quant.util.Transaction;
+import network.quant.util.*;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -250,6 +247,30 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
             return this.webClient
                     .get()
                     .uri(OverledgerContext.SEARCH_ADDRESSES, address)
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
+                    .bodyToMono(responseClass)
+                    .block();
+        } catch (RedirectException e) {
+            return this.webClient
+                    .get()
+                    .uri(e.getUrl())
+                    .retrieve()
+                    .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
+                    .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
+                    .bodyToMono(responseClass)
+                    .block();
+        }
+    }
+
+    @Override
+    public Block searchBlock(String dlt, String blockhash, Class<Block> responseClass) {
+        try {
+            return this.webClient
+                    .get()
+                    .uri(OverledgerContext.SEARCH_CHAIN_BLOCKS, dlt, blockhash)
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)

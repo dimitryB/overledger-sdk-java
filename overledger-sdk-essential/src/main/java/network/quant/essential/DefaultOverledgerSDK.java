@@ -173,6 +173,11 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
         return this.client.searchAddress(address, responseClass);
     }
 
+    @Override
+    public Block searchBlock(String dlt, String blockhash, Class<Block> responseClass) {
+        return this.client.searchBlock(dlt, blockhash, responseClass);
+    }
+
     /**
      * Write transaction to BPI layer from byte array
      * @param ovlTransaction OverledgerTransaction containing overledger transaction request

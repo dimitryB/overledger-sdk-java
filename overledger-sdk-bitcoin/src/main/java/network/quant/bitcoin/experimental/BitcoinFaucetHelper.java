@@ -88,7 +88,7 @@ public class BitcoinFaucetHelper {
                         .uri(
                                 url,
                                 bitcoinAccount.getKey().toAddress(bitcoinAccount.getNetworkParameters()).toBase58(),
-                                ONE_BTC
+                                BTC_IN_SATOSHI.multiply(BigDecimal.ONE)
                         )
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .retrieve()
