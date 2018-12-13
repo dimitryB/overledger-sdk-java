@@ -1,6 +1,6 @@
-# Overledger SDK for Java 1.0.1-alpha release
+# Overledger SDK for Java 1.0.0-alpha.1 release
 
-This Overledger SDK 1.0.1-alpha has includes configuration with OverLedger testnet
+This Overledger SDK 1.0.0-alpha.1 has includes configuration with OverLedger testnet
 
 ----------------------------------------
 
