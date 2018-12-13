@@ -4,7 +4,7 @@ This Overledger SDK 1.0.0-alpha.1 has includes configuration with OverLedger tes
 
 ----------------------------------------
 
-What's New in v1.0.1
+What's New in v1.0.0-alpha.1
 ------------------
 Include Motorcycle shop example module
 
