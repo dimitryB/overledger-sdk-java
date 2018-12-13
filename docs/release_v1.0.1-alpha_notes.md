@@ -18,10 +18,6 @@ Add search by balance
 
 Add search by block hash
 
-Add licence validation endpoint
-
-Add Mapp transaction verification endpoint
-
 Changes, Known Issues, and Workarounds
 --------------------------------------
 Update client requests with redirect support
