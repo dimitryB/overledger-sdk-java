@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 import java.math.BigDecimal;
 
 /**
@@ -44,7 +43,7 @@ public class BitcoinFaucetHelper {
             bitcoinAccount.addUtxo(
                     faucetResponseDto.getTxnHash(),
                     faucetResponseDto.getVout(),
-                    BTC_IN_SATOSHI.multiply(faucetResponseDto.amount.abs()).longValue(),
+                    faucetResponseDto.amount.abs().longValue(),
                     1,
                     faucetResponseDto.getAddress());
         } catch (Exception e) {

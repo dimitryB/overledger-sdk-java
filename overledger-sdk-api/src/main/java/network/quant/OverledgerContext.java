@@ -19,6 +19,7 @@ public final class OverledgerContext {
     private static final String SEARCH_TRANSACTIONS_KEY                     = "overledger.search.transactions";
     private static final String SEARCH_ADDRESSES_KEY                        = "overledger.search.addresses";
     private static final String SEARCH_CHAIN_BLOCKS_KEY                     = "overledger.search.chain.blocks";
+    private static final String BALANCES_CHECK_KEY                          = "overledger.balances";
     private static final String BPI_KEY_KEY                                 = "overledger.bpikey";
     private static final String MAPP_KEY                                    = "overledger.mappid";
     public static String WRITE_TRANSACTIONS;
@@ -29,7 +30,7 @@ public final class OverledgerContext {
     public static String SEARCH_TRANSACTIONS;
     public static String SEARCH_ADDRESSES;
     public static String SEARCH_CHAIN_BLOCKS;
-    public static String LICENSE_CHECK;
+    public static String BALANCES_CHECK;
 
     public static String BPI_KEY;
     public static String MAPP_ID;
@@ -48,6 +49,7 @@ public final class OverledgerContext {
         SEARCH_TRANSACTIONS = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_TRANSACTIONS_KEY));
         SEARCH_ADDRESSES = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_ADDRESSES_KEY));
         SEARCH_CHAIN_BLOCKS = String.format("%s%s", baseUrl, properties.getProperty(SEARCH_CHAIN_BLOCKS_KEY));
+        BALANCES_CHECK = String.format("%s%s", baseUrl, properties.getProperty(BALANCES_CHECK_KEY));
         BPI_KEY = properties.getProperty(BPI_KEY_KEY);
         MAPP_ID = properties.getProperty(MAPP_KEY);
     }

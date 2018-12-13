@@ -65,7 +65,7 @@ public class RippleAccount implements Account {
         payment.as(AccountID.Account, fromAddress);
         payment.as(AccountID.Destination, toAddress);
         payment.as(Amount.Amount, dltTransaction.getAmount().toString());
-        payment.as(UInt32.Sequence, null == dltTransaction.getSequence()?this.nonce:dltTransaction.getSequence());
+        payment.as(UInt32.Sequence, null == dltTransaction.getSequence()?this.nonce.longValue():dltTransaction.getSequence());
         payment.as(Amount.Fee, Optional.ofNullable(dltTransaction.getFee()).orElse(FEE).toString());
         payment.as(UInt32.LastLedgerSequence, LAST_INDEX);
         this.setMemo(payment, message);

@@ -14,8 +14,10 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.List;
@@ -194,25 +196,45 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public void getLicenceCheck() {
+    public List<BalanceResponse> postBalances(List<BalanceRequest> balanceRequests) {
         try {
-            this.webClient
-                    .get()
-                    .uri(OverledgerContext.LICENSE_CHECK)
+            return this.webClient
+                    .post()
+                    .uri(OverledgerContext.BALANCES_CHECK)
+                    .body(BodyInserters.fromObject(balanceRequests))
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
                     .bodyToMono(String.class)
+                    .map(s -> {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        try {
+                            return (List<BalanceResponse>)objectMapper.readValue(s, new TypeReference<List<BalanceResponse>>() {});
+                        } catch (IOException ioe) {
+                            ioe.printStackTrace();
+                        }
+                        return null;
+                    })
                     .block();
         } catch (RedirectException e) {
-            this.webClient
-                    .get()
+            return this.webClient
+                    .post()
                     .uri(e.getUrl())
+                    .body(BodyInserters.fromObject(balanceRequests))
                     .retrieve()
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .bodyToMono(String.class)
+                    .map(s -> {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        try {
+                            return (List<BalanceResponse>)objectMapper.readValue(s, new TypeReference<List<BalanceResponse>>() {});
+                        } catch (IOException ioe) {
+                            ioe.printStackTrace();
+                        }
+                        return null;
+                    })
                     .block();
         }
     }

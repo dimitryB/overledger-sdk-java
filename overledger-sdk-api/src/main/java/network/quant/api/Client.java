@@ -83,6 +83,11 @@ public interface Client<T, S> {
      */
     Block searchBlock(String dlt, String blockhash, Class<Block> responseClass);
 
-    void getLicenceCheck();
+    /**
+     * Get balances of given DLTs
+     * @param balanceRequests List containing dlt address list
+     * @return List of balances
+     */
+    List<BalanceResponse> postBalances(List<BalanceRequest> balanceRequests);
 
 }
