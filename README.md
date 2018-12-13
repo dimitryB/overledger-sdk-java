@@ -111,7 +111,7 @@ Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more 
 
 ## Release notes
 
-| Release         |                        Notes                                       |
-| --------------- | :----------------------------------------------------------------: |
-| 1.0.0-alpha     | [v1.0.0-alpha release notes](docs/release_v1.0.0-alpha_notes.md)   |
+| Release         |                        Notes                                         |
+| --------------- | :------------------------------------------------------------------: |
+| 1.0.0-alpha     | [v1.0.0-alpha release notes](docs/release_v1.0.0-alpha_notes.md)     |
 | 1.0.0-alpha.1   | [v1.0.0-alpha.1 release notes](docs/release_v1.0.0-alpha.1_notes.md) |
