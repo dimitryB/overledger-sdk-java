@@ -259,11 +259,9 @@ public class OverledgerSDKHelper {
                     OverledgerTransactionResponse writeOverledgerTransactionResponse = objectMapper.readValue(clientResponseException.getResponseBody(), OverledgerTransactionResponse.class);
                     this.applicationDataHandler.onPurchaseSuccess(writeOverledgerTransactionResponse.getOverledgerTransactionId());
                 } catch (IOException e1) {
-                    e1.printStackTrace();
                     log.error("Fail to write transaction to DLTs", e);
                 }
             } else {
-                e.printStackTrace();
                 log.error("Fail to write transaction to DLTs", e);
                 this.applicationDataHandler.onPurchaseFailed("Fail to write transaction to DLTs");
             }
