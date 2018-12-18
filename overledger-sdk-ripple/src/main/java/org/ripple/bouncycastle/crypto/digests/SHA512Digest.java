@@ -30,6 +30,7 @@ public class SHA512Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t SHA512Digest
      */
     public SHA512Digest(SHA512Digest t)
     {

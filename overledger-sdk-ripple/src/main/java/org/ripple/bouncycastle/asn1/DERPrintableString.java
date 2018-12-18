@@ -81,6 +81,7 @@ public class DERPrintableString
 
     /**
      * basic constructor - this does not validate the string
+     * @param string String
      */
     public DERPrintableString(
         String   string)
@@ -161,7 +162,7 @@ public class DERPrintableString
     /**
      * return true if the passed in String can be represented without
      * loss as a PrintableString, false otherwise.
-     *
+     * @param str String
      * @return true if in printable set, false otherwise.
      */
     public static boolean isPrintableString(

@@ -8,7 +8,7 @@ public class DERExternalParser
     private ASN1StreamParser _parser;
 
     /**
-     * 
+     * @param parser ASN1StreamParser
      */
     public DERExternalParser(ASN1StreamParser parser)
     {

@@ -40,7 +40,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/quantnetwork/overledger-sdk-java.git</connection>
-        <developerConnection>scm:git@github.com:quantnetwork/overledger-sdk-java.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:quantnetwork/overledger-sdk-java.git</developerConnection>
         <url>https://github.com/quantnetwork/overledger-sdk-java</url>
     </scm>
 

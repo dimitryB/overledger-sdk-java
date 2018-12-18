@@ -43,7 +43,6 @@ public class X9FieldElement
      * <pre>
      *  FieldElement ::= OCTET STRING
      * </pre>
-     * <p>
      * <ol>
      * <li> if <i>q</i> is an odd prime then the field element is
      * processed as an Integer and converted to an octet string

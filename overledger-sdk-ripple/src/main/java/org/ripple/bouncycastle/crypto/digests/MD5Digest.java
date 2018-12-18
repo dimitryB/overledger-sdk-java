@@ -27,6 +27,7 @@ public class MD5Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t MD5Digest
      */
     public MD5Digest(MD5Digest t)
     {

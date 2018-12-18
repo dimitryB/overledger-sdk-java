@@ -73,6 +73,7 @@ public class DERUniversalString
 
     /**
      * basic constructor - byte encoded string.
+     * @param string byte array
      */
     public DERUniversalString(
         byte[]   string)

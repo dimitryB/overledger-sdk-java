@@ -37,6 +37,7 @@ public abstract class LongDigest
      * Copy constructor.  We are using copy constructors in place
      * of the Object.clone() interface as this interface is not
      * supported by J2ME.
+     * @param t LongDigest
      */
     protected LongDigest(LongDigest t)
     {

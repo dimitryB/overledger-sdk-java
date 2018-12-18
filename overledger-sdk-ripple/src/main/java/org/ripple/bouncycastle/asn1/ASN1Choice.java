@@ -7,7 +7,7 @@ package org.ripple.bouncycastle.asn1;
  * <p>
  * If you use this interface your class should also implement the getInstance()
  * pattern which takes a tag object and the tagging mode used.
- * <p>
+ * </p>
  * <hr>
  * <p><b>X.690</b></p>
  * <p><b>8: Basic encoding rules</b></p>
@@ -19,8 +19,8 @@ package org.ripple.bouncycastle.asn1;
  * <p>
  * NOTE 2 &mdash; The tag used in the identifier octets is the tag of the chosen type,
  * as specified in the ASN.1 definition of the choice type.
- * </blockquote>
  * </p>
+ * </blockquote>
  */
 public interface ASN1Choice
 {

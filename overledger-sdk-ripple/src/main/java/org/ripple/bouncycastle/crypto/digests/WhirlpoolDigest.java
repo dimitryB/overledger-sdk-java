@@ -134,6 +134,7 @@ public final class WhirlpoolDigest
     /**
      * Copy constructor. This will copy the state of the provided message
      * digest.
+     * @param originalDigest WhirlpoolDigest
      */
     public WhirlpoolDigest(WhirlpoolDigest originalDigest)
     {

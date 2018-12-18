@@ -7,6 +7,7 @@ public interface Memoable
      * <p>
      * The returned object may be used simply to store the state, or may be used as a similar object
      * starting from the copied state.
+     * @return Memoable copy
      */
     public Memoable copy();
 

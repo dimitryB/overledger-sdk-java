@@ -34,15 +34,12 @@ import org.ripple.bouncycastle.util.encoders.Hex;
  * and with the most significant bit of an octet of the data value
  * aligned with the most significant bit of an octet of the contents octets.
  * </p>
- * <p>
  * <b>8.7.3</b> The contents octets for the constructed encoding shall consist
  * of zero, one, or more encodings.
  * <blockquote>
  * NOTE &mdash; Each such encoding includes identifier, length, and contents octets,
  * and may include end-of-contents octets if it is constructed.
  * </blockquote>
- * </p>
- * <p>
  * <b>8.7.3.1</b> To encode an octetstring value in this way,
  * it is segmented. Each segment shall consist of a series of
  * consecutive octets of the value. There shall be no significance
@@ -50,8 +47,6 @@ import org.ripple.bouncycastle.util.encoders.Hex;
  * <blockquote>
  * NOTE &mdash; A segment may be of size zero, i.e. contain no octets.
  * </blockquote>
- * </p>
- * <p>
  * <b>8.7.3.2</b> Each encoding in the contents octets shall represent
  * a segment of the overall octetstring, the encoding arising from
  * a recursive application of this subclause.
@@ -63,10 +58,10 @@ import org.ripple.bouncycastle.util.encoders.Hex;
  * each encoding in the contents octets may itself
  * be primitive or constructed.
  * However, such encodings will usually be primitive.
- * </p><p>
+ * <p>
  * NOTE 2 &mdash; In particular, the tags in the contents octets are always universal class, number 4.
- * </blockquote>
  * </p>
+ * </blockquote>
  * <p><b>9: Canonical encoding rules</b></p>
  * <p><b>9.1 Length forms</b></p>
  * <p>
@@ -85,17 +80,15 @@ import org.ripple.bouncycastle.util.encoders.Hex;
  * the last, shall have 1000 contents octets. (Contrast with 8.21.6.)
  * </p>
  * <b>10: Distinguished encoding rules</b>
- * </p><p>
+ * </p>
  * <b>10.1 Length forms</b>
  * The definite form of length encoding shall be used,
  * encoded in the minimum number of octets.
- * [Contrast with 8.1.3.2 b).] 
- * </p><p>
+ * [Contrast with 8.1.3.2 b).]
  * <b>10.2 String encoding forms</b>
  * For BIT STRING, OCTET STRING and restricted character string types,
  * the constructed form of encoding shall not be used.
  * (Contrast with 8.21.6.)
- * </p>
  */
 public abstract class ASN1OctetString
     extends ASN1Primitive

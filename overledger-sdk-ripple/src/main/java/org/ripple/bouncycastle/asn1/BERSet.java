@@ -33,6 +33,7 @@ public class BERSet
 
     /**
      * create a set from an array of objects.
+     * @param a ASN1Encodable list
      */
     public BERSet(
         ASN1Encodable[]   a)

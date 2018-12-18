@@ -63,6 +63,8 @@ public class STObject implements SerializedType, Iterable<Field> {
      * If the object has a TransactionType or LedgerEntryType
      * then we can up)grade to a child class, with more specific
      * helper methods, and we can use `instanceof` to great effect.
+     * @param source Source
+     * @return STObject
      */
     public static STObject formatted(STObject source) {
         return STObjectFormatter.doFormatted(source);

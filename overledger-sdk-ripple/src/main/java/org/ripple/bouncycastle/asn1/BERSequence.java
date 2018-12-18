@@ -24,6 +24,7 @@ public class BERSequence
 
     /**
      * create a sequence containing a vector of objects.
+     * @param v ASN1EncodableVector
      */
     public BERSequence(
         ASN1EncodableVector v)
@@ -33,6 +34,7 @@ public class BERSequence
 
     /**
      * create a sequence containing an array of objects.
+     * @param array ASN1Encodable list
      */
     public BERSequence(
         ASN1Encodable[]   array)

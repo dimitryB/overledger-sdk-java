@@ -84,6 +84,7 @@ public class DERVisibleString
 
     /**
      * Basic constructor
+     * @param string String
      */
     public DERVisibleString(
         String   string)

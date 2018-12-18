@@ -42,6 +42,7 @@ public class GOST3411Digest
     /**
      * Constructor to allow use of a particular sbox with GOST28147
      * @see GOST28147Engine#getSBox(String)
+     * @param sBoxParam byte array
      */
     public GOST3411Digest(byte[] sBoxParam)
     {
@@ -54,6 +55,7 @@ public class GOST3411Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t GOST3411Digest
      */
     public GOST3411Digest(GOST3411Digest t)
     {

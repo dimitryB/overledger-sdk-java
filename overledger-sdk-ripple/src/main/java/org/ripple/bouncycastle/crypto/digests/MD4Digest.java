@@ -31,6 +31,7 @@ public class MD4Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t MD4Digest
      */
     public MD4Digest(MD4Digest t)
     {

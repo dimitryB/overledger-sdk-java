@@ -349,6 +349,9 @@ public class ThreefishEngine
 
     /**
      * Read a single 64 bit word from input in LSB first order.
+     * @param bytes byte array
+     * @param off int
+     * @return long byte
      */
     // At least package protected for efficient access from inner class
     public static long bytesToWord(final byte[] bytes, final int off)
@@ -376,6 +379,9 @@ public class ThreefishEngine
 
     /**
      * Write a 64 bit word to output in LSB first order.
+     * @param word long
+     * @param bytes bytes
+     * @param off int
      */
     // At least package protected for efficient access from inner class
     public static void wordToBytes(final long word, final byte[] bytes, final int off)

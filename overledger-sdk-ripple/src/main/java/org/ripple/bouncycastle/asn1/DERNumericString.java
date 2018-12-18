@@ -81,6 +81,7 @@ public class DERNumericString
 
     /**
      * basic constructor -  without validation..
+     * @param string String
      */
     public DERNumericString(
         String   string)

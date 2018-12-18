@@ -30,6 +30,7 @@ public abstract class GeneralDigest
      * Copy constructor.  We are using copy constructors in place
      * of the Object.clone() interface as this interface is not
      * supported by J2ME.
+     * @param t GeneralDigest
      */
     protected GeneralDigest(GeneralDigest t)
     {

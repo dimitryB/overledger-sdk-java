@@ -18,7 +18,6 @@ import org.ripple.bouncycastle.util.Integers;
 
 /**
  * Parameters for the Skein hash function - a series of byte[] strings identified by integer tags.
- * <p>
  * Parameterised Skein can be used for:
  * <ul>
  * <li>MAC generation, by providing a {@link org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec.Builder#setKey(byte[]) key}.</li>
@@ -31,7 +30,6 @@ import org.ripple.bouncycastle.util.Integers;
  * {@link org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec.Builder#setPersonalisation(java.util.Date, String, String) recommended format} or
  * {@link org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec.Builder#setPersonalisation(byte[]) arbitrary} personalisation string.</li>
  * </ul>
- * </p>
  * @see org.ripple.bouncycastle.crypto.digests.SkeinEngine
  * @see org.ripple.bouncycastle.crypto.digests.SkeinDigest
  * @see org.ripple.bouncycastle.crypto.macs.SkeinMac
@@ -171,8 +169,8 @@ public class SkeinParameterSpec
          * Parameter types must be in the range 0,5..62, and cannot use the value {@value
          * org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec#PARAM_TYPE_MESSAGE} (reserved for message body).
          * <p>
-         * Parameters with type < {@value org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec#PARAM_TYPE_MESSAGE} are processed before
-         * the message content, parameters with type > {@value org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec#PARAM_TYPE_MESSAGE}
+         * Parameters with type {@value org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec#PARAM_TYPE_MESSAGE} are processed before
+         * the message content, parameters with type {@value org.ripple.bouncycastle.jcajce.spec.SkeinParameterSpec#PARAM_TYPE_MESSAGE}
          * are processed after the message and prior to output.
          * </p>
          * @param type  the type of the parameter, in the range 5..62.

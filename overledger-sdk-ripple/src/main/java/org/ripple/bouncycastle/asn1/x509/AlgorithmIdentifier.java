@@ -55,7 +55,7 @@ public class AlgorithmIdentifier
 
     /**
      * @deprecated use ASN1ObjectIdentifier
-     * @param objectId
+     * @param objectId String
      */
     public AlgorithmIdentifier(
         String     objectId)
@@ -74,7 +74,7 @@ public class AlgorithmIdentifier
 
     /**
      * @deprecated use AlgorithmIdentifier.getInstance()
-     * @param seq
+     * @param seq ASN1Sequence
      */
     public AlgorithmIdentifier(
         ASN1Sequence   seq)
@@ -105,7 +105,7 @@ public class AlgorithmIdentifier
 
     /**
      * @deprecated use getAlgorithm
-     * @return
+     * @return ASN1ObjectIdentifier
      */
     public ASN1ObjectIdentifier getObjectId()
     {

@@ -38,6 +38,7 @@ public class SHA256Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t SHA256Digest
      */
     public SHA256Digest(SHA256Digest t)
     {

@@ -84,7 +84,6 @@ public interface OverledgerSDK {
      * @param address String containing address
      * @param responseClass Class containing response type
      * @return Address containing address implementation
-     * @throws Exception throw if connection between client and manager is broken
      */
     Address searchAddress(String address, Class<Address> responseClass);
 

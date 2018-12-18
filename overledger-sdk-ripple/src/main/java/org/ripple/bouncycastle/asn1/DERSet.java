@@ -38,6 +38,7 @@ public class DERSet
     
     /**
      * create a set from an array of objects.
+     * @param a ASN1Encodable list
      */
     public DERSet(
         ASN1Encodable[]   a)

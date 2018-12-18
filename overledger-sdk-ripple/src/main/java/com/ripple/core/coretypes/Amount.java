@@ -301,7 +301,8 @@ public class Amount extends Number implements SerializedType, Comparable<Amount>
     
     Divide and multiply are equivalent to the javascript ripple-lib
     ratio_human and product_human.
-
+    @param augend BigDecimal
+     @return Amount
     */
     public Amount add(BigDecimal augend) {
         return newValue(value.add(augend), true);

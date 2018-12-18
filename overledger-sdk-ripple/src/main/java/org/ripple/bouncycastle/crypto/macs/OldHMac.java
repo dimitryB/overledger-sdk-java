@@ -25,6 +25,7 @@ implements Mac
 
     /**
      * @deprecated uses incorrect pad for SHA-512 and SHA-384 use HMac.
+     * @param digest Digest
      */
     public OldHMac(
         Digest digest)

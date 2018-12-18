@@ -38,6 +38,7 @@ public class BERTaggedObject
     /**
      * create an implicitly tagged object that contains a zero
      * length sequence.
+     * @param tagNo int
      */
     public BERTaggedObject(
         int             tagNo)

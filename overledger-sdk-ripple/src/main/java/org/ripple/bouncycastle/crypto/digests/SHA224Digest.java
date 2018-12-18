@@ -38,6 +38,7 @@ public class SHA224Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t SHA224Digest
      */
     public SHA224Digest(SHA224Digest t)
     {

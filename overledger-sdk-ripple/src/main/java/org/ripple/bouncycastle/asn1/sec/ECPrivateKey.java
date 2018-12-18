@@ -49,6 +49,7 @@ public class ECPrivateKey
 
     /**
      * @deprecated use constructor which takes orderBitLength to guarantee correct encoding.
+     * @param key BigInteger
      */
     public ECPrivateKey(
         BigInteger key)
@@ -78,6 +79,8 @@ public class ECPrivateKey
 
     /**
      * @deprecated use constructor which takes orderBitLength to guarantee correct encoding.
+     * @param key BigInteger
+     * @param parameters ASN1Encodable
      */
     public ECPrivateKey(
         BigInteger key,
@@ -88,6 +91,9 @@ public class ECPrivateKey
 
     /**
      * @deprecated use constructor which takes orderBitLength to guarantee correct encoding.
+     * @param key BigInteger
+     * @param publicKey DERBitString
+     * @param parameters ASN1Encodable
      */
     public ECPrivateKey(
         BigInteger key,

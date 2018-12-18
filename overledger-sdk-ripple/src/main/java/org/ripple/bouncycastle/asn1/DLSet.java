@@ -83,6 +83,7 @@ public class DLSet
 
     /**
      * create a set from an array of objects.
+     * @param a ASN1Encodable
      */
     public DLSet(
         ASN1Encodable[] a)

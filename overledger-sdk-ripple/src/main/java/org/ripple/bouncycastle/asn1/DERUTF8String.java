@@ -83,6 +83,7 @@ public class DERUTF8String
 
     /**
      * Basic constructor
+     * @param string String
      */
     public DERUTF8String(String string)
     {

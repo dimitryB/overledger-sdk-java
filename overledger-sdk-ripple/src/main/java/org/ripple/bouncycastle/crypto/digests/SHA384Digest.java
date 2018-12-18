@@ -30,6 +30,7 @@ public class SHA384Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t SHA384Digest
      */
     public SHA384Digest(SHA384Digest t)
     {

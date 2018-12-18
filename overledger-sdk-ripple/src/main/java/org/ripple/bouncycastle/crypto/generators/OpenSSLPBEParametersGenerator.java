@@ -9,10 +9,8 @@ import org.ripple.bouncycastle.crypto.params.ParametersWithIV;
 
 /**
  * Generator for PBE derived keys and ivs as usd by OpenSSL.
- * <p>
  * The scheme is a simple extension of PKCS 5 V2.0 Scheme 1 using MD5 with an
  * iteration count of 1.
- * <p>
  */
 public class OpenSSLPBEParametersGenerator
     extends PBEParametersGenerator

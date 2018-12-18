@@ -46,7 +46,7 @@ public class ECNamedCurveTable
     /**
      * return the object identifier signified by the passed in name. Null
      * if there is no object identifier associated with name.
-     *
+     * @param name String
      * @return the object identifier associated with name, if present.
      */
     public static ASN1ObjectIdentifier getOID(

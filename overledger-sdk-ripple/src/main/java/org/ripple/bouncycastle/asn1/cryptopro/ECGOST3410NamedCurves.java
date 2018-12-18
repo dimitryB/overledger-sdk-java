@@ -132,6 +132,7 @@ public class ECGOST3410NamedCurves
      * isn't present.
      *
      * @param oid an object identifier representing a named parameters, if present.
+     * @return ECDomainParameters id
      */
     public static ECDomainParameters getByOID(
         ASN1ObjectIdentifier  oid)
@@ -142,6 +143,7 @@ public class ECGOST3410NamedCurves
     /**
      * returns an enumeration containing the name strings for parameters
      * contained in this structure.
+     * @return Enumeration names
      */
     public static Enumeration getNames()
     {
@@ -163,6 +165,7 @@ public class ECGOST3410NamedCurves
 
     /**
      * return the named curve name represented by the given object identifier.
+     * @return String name
      */
     public static String getName(
         ASN1ObjectIdentifier  oid)

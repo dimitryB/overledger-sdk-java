@@ -59,6 +59,7 @@ public class SM3Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t SM3Digest
      */
     public SM3Digest(SM3Digest t)
     {

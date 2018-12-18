@@ -69,7 +69,7 @@ public class PrivateKeyInfo
 
     /**
      * @deprecated use PrivateKeyInfo.getInstance()
-     * @param seq
+     * @param seq ASN1Sequence
      */
     public PrivateKeyInfo(
         ASN1Sequence  seq)
@@ -97,6 +97,7 @@ public class PrivateKeyInfo
     }
         /**
           * @deprecated use getPrivateKeyAlgorithm()
+         * @return AlgorithmIdentifier id
      */
     public AlgorithmIdentifier getAlgorithmId()
     {
@@ -111,6 +112,7 @@ public class PrivateKeyInfo
 
     /**
           * @deprecated use parsePrivateKey()
+     * @return ASN1Primitive key
      */
     public ASN1Primitive getPrivateKey()
     {

@@ -20,6 +20,7 @@ public class DLSequence
 
     /**
      * Create a sequence containing one object
+     * @param obj ASN1Encodable
      */
     public DLSequence(
         ASN1Encodable obj)
@@ -29,6 +30,7 @@ public class DLSequence
 
     /**
      * Create a sequence containing a vector of objects.
+     * @param v ASN1EncodableVector
      */
     public DLSequence(
         ASN1EncodableVector v)
@@ -38,6 +40,7 @@ public class DLSequence
 
     /**
      * Create a sequence containing an array of objects.
+     * @param array list
      */
     public DLSequence(
         ASN1Encodable[] array)

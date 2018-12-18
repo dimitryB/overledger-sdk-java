@@ -528,6 +528,7 @@ public class SkeinEngine
 
     /**
      * Creates a SkeinEngine as an exact copy of an existing instance.
+     * @param engine SkeinEngine
      */
     public SkeinEngine(SkeinEngine engine)
     {

@@ -31,6 +31,7 @@ public interface DSA
      * @param message the message that was supposed to have been signed.
      * @param r the r signature value.
      * @param s the s signature value.
+     * @return boolean
      */
     public boolean verifySignature(byte[] message, BigInteger  r, BigInteger s);
 }

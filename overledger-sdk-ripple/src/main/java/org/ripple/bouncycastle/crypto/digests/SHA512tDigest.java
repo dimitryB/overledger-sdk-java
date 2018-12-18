@@ -16,6 +16,7 @@ public class SHA512tDigest
 
     /**
      * Standard constructor
+     * @param bitLength int
      */
     public SHA512tDigest(int bitLength)
     {
@@ -44,6 +45,7 @@ public class SHA512tDigest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t SHA512tDigest
      */
     public SHA512tDigest(SHA512tDigest t)
     {

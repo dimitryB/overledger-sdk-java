@@ -31,6 +31,7 @@ public class SHA1Digest
     /**
      * Copy constructor.  This will copy the state of the provided
      * message digest.
+     * @param t SHA1Digest
      */
     public SHA1Digest(SHA1Digest t)
     {

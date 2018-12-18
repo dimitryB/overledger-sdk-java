@@ -29,7 +29,7 @@ public interface OverledgerTransaction {
 
     /**
      * Get DLT transaction list
-     * @return DltTransaction list containing DLT transaction list
+     * @return List list containing DLT transaction list
      */
     <T extends DltTransaction> List<T> getDltData();
 

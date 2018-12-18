@@ -9,6 +9,10 @@ public class Quality  {
     /**
      * Finds the quality (TakerPays/TakerGets) ratio packed into the last 64
      * bits of root DirectoryNode ledger indexes.
+     * @param bookDirectory book
+     * @param payIsNative pay
+     * @param getIsNative get
+     * @return BigDecimal
      */
     public static BigDecimal fromBookDirectory(Hash256 bookDirectory,
                                                boolean payIsNative,

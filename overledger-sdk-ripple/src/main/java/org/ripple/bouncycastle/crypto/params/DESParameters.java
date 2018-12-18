@@ -54,7 +54,8 @@ public class DESParameters
      * <p>
      * See <a href="http://www.counterpane.com/applied.html">"Applied
      * Cryptography"</a> by Bruce Schneier for more information.
-     *
+     * @param key byte array
+     * @param offset int
      * @return true if the given DES key material is weak or semi-weak,
      *     false otherwise.
      */
