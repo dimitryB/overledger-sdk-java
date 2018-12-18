@@ -44,9 +44,10 @@ public interface Client<T, S> {
      * HTTP GET method to BPI layer
      * @param mappId String containing Overledger Mapp ID
      * @param  page Page containing paging information
+     * @param responseClass Class containing response body class type
      * @return PagedResult containing actual response body
      */
-    PagedResult getTransactions(String mappId, Page page);
+    PagedResult<S> getTransactions(String mappId, Page page, Class<PagedResult<S>> responseClass);
 
     /**
      * Read transaction from BPI layer

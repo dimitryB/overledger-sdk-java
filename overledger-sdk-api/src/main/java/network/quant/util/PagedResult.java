@@ -2,14 +2,20 @@ package network.quant.util;
 
 import java.util.List;
 
-public class PagedResult<S> {
+public interface PagedResult<S> {
 
-    private List<S> content;
-    private int pageNumber;
-    private int pageSize;
-    private int totalElements;
-    private boolean last;
-    private boolean first;
-    private int totalPages;
+    List<S> getContent();
+
+    int getPageNumber();
+
+    int getPageSize();
+
+    int getTotalElements();
+
+    boolean isLast();
+
+    boolean isFirst();
+
+    int getTotalPages();
 
 }

@@ -34,15 +34,15 @@ public class WalletPanel extends BaseComponent implements WalletComponent.Wallet
         label.setForeground(TEXT);
         this.add(label, componentIndex++);
 
-        this.bitcoinWallet = new WalletComponent(new Dimension(dimension.width-40, 100), WalletComponent.TYPE.btc, this);
+        this.bitcoinWallet = new WalletComponent(new Dimension(dimension.width-40, 100), WalletComponent.TYPE.bitcoin, this);
         this.bitcoinWallet.setLocation(20, 100);
         this.add(this.bitcoinWallet, componentIndex++);
 
-        this.ethereumWallet = new WalletComponent(new Dimension(dimension.width-40, 100), WalletComponent.TYPE.eth, this);
+        this.ethereumWallet = new WalletComponent(new Dimension(dimension.width-40, 100), WalletComponent.TYPE.ethereum, this);
         this.ethereumWallet.setLocation(20, 225);
         this.add(this.ethereumWallet, componentIndex++);
 
-        this.rippleWallet = new WalletComponent(new Dimension(dimension.width-40, 100), WalletComponent.TYPE.xrp, this);
+        this.rippleWallet = new WalletComponent(new Dimension(dimension.width-40, 100), WalletComponent.TYPE.ripple, this);
         this.rippleWallet.setLocation(20, 350);
         this.add(this.rippleWallet, componentIndex++);
 

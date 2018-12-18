@@ -22,7 +22,7 @@ public class WalletComponent extends BaseComponent {
 
     public enum TYPE {
 
-        btc, eth, xrp;
+        bitcoin, ethereum, ripple;
 
     }
 

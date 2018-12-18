@@ -16,6 +16,8 @@ import network.quant.sdk.OverledgerSDKHelper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.util.Page;
+
 import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
@@ -56,8 +58,33 @@ public class ApplicationFactory implements Factory, ApplicationExitHandler, Appl
     }
 
     @Override
-    public void onLoadSetting(String bpiKey, String mappId, String writeTransactions, String readTransactionsByMappId, String readTransactionsByTransactionId, String readTransactionsByTransactionHash) {
-        this.getContentPresenter().loadSettings(bpiKey, mappId, writeTransactions, readTransactionsByMappId, readTransactionsByTransactionId, readTransactionsByTransactionHash);
+    public void onLoadSetting(
+            String bpiKey,
+            String mappId,
+            String writeTransactions,
+            String readTransactionsByMappId,
+            String readTransactionsByMappIdPage,
+            String readTransactionsByTransactionId,
+            String readTransactionsByTransactionHash,
+            String searchTransaction,
+            String searchAddress,
+            String searchBlocks,
+            String balances
+
+    ) {
+        this.getContentPresenter().loadSettings(
+                bpiKey,
+                mappId,
+                writeTransactions,
+                readTransactionsByMappId,
+                readTransactionsByMappIdPage,
+                readTransactionsByTransactionId,
+                readTransactionsByTransactionHash,
+                searchTransaction,
+                searchAddress,
+                searchBlocks,
+                balances
+                );
     }
 
     @Override
@@ -86,8 +113,8 @@ public class ApplicationFactory implements Factory, ApplicationExitHandler, Appl
     }
 
     @Override
-    public void onLoadOrders(List<OverledgerTransaction> readTransactions) {
-        this.contentPresenter.loadOrders(readTransactions);
+    public void onLoadOrders(List<OverledgerTransaction> readTransactions, Page page) {
+        this.contentPresenter.loadOrders(readTransactions, page);
     }
 
     @Override

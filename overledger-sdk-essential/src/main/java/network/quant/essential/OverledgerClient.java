@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.List;
@@ -117,7 +116,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .map(s -> {
                         ObjectMapper objectMapper = new ObjectMapper();
                         try {
-                            return (List<S>)objectMapper.readValue(s, new TypeReference<List<S>>() {});
+                            return (List<S>)objectMapper.readValue(s, new TypeReference<List>() {});
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -147,7 +146,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
     }
 
     @Override
-    public PagedResult getTransactions(String mappId, Page page) {
+    public PagedResult<S> getTransactions(String mappId, Page page, Class<PagedResult<S>> responseClass) {
         try {
             return this.webClient
                     .get()
@@ -156,7 +155,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
-                    .bodyToMono(PagedResult.class)
+                    .bodyToMono(responseClass)
                     .block();
         } catch (RedirectException e) {
             return this.webClient
@@ -166,7 +165,7 @@ public final class OverledgerClient<T extends OverledgerTransactionRequest, S ex
                     .onStatus(HttpStatus::is4xxClientError, this::getClientResponse)
                     .onStatus(HttpStatus::is5xxServerError, this::getClientResponse)
                     .onStatus(HttpStatus::is3xxRedirection, clientResponse -> Mono.error(new RedirectException(clientResponse.headers().header(HEADER_LOCATION).get(0))))
-                    .bodyToMono(PagedResult.class)
+                    .bodyToMono(responseClass)
                     .block();
         }
     }

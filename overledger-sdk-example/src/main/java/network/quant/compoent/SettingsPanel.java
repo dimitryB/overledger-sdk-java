@@ -26,14 +26,25 @@ public class SettingsPanel extends BaseComponent {
     JLabel mappIdLabel = new JLabel("Mapp Id");
     JLabel writeLabel = new JLabel("Write Endpoint");
     JLabel readByMappIdLabel = new JLabel("Read by MappID Endpoint");
+    JLabel readByMappIdPageLabel = new JLabel("Read by MappID (Page) Endpoint");
     JLabel readByIdLabel = new JLabel("Read by ID Endpoint");
     JLabel readByHashLabel = new JLabel("Read by Hash Endpoint");
+    JLabel searchTransactionLabel = new JLabel("Search Txn Endpoint");
+    JLabel searchAddressLabel = new JLabel("Search Address Endpoint");
+    JLabel searchBlocksLabel = new JLabel("Search blocks Endpoint");
+    JLabel balancesLabel = new JLabel("Balances Endpoint");
     public JTextField bpiKeyField = new JTextField();
     public JTextField mappIdField = new JTextField();
     public JTextField writeField = new JTextField();
     public JTextField readByMappIdField = new JTextField();
+    public JTextField readByMappIdPageField = new JTextField();
     public JTextField readByIdField = new JTextField();
     public JTextField readByHashField = new JTextField();
+    public JTextField searchTransactionField = new JTextField();
+    public JTextField searchAddressField = new JTextField();
+    public JTextField searchBlocksField = new JTextField();
+    public JTextField balancesField = new JTextField();
+
     network.quant.compoent.Button okButton = new network.quant.compoent.Button("OK", network.quant.compoent.Button.TYPE.OK);
     network.quant.compoent.Button cancelButton = new network.quant.compoent.Button("CANCEL", Button.TYPE.CANCEL);
 
@@ -126,29 +137,89 @@ public class SettingsPanel extends BaseComponent {
         this.readByMappIdField.setForeground(TEXT);
         this.add(this.readByMappIdField, componentIndex++);
 
+        this.readByMappIdPageLabel.setSize(300, 32);
+        this.readByMappIdPageLabel.setLocation(10, 310);
+        this.readByMappIdPageLabel.setFont(UITools.getFont(Font.BOLD, 16));
+        this.readByMappIdPageLabel.setForeground(TEXT);
+        this.add(this.readByMappIdPageLabel, componentIndex++);
+
+        this.readByMappIdPageField.setSize(dimension.width - 220, 32);
+        this.readByMappIdPageField.setLocation(310, 310);
+        this.readByMappIdPageField.setFont(UITools.getFont(Font.PLAIN, 16));
+        this.readByMappIdPageField.setForeground(TEXT);
+        this.add(this.readByMappIdPageField, componentIndex++);
+
         this.readByIdLabel.setSize(300, 32);
-        this.readByIdLabel.setLocation(10, 310);
+        this.readByIdLabel.setLocation(10, 350);
         this.readByIdLabel.setFont(UITools.getFont(Font.BOLD, 16));
         this.readByIdLabel.setForeground(TEXT);
         this.add(this.readByIdLabel, componentIndex++);
 
         this.readByIdField.setSize(dimension.width - 220, 32);
-        this.readByIdField.setLocation(310, 310);
+        this.readByIdField.setLocation(310, 350);
         this.readByIdField.setFont(UITools.getFont(Font.PLAIN, 16));
         this.readByIdField.setForeground(TEXT);
         this.add(this.readByIdField, componentIndex++);
 
         this.readByHashLabel.setSize(300, 32);
-        this.readByHashLabel.setLocation(10, 350);
+        this.readByHashLabel.setLocation(10, 390);
         this.readByHashLabel.setFont(UITools.getFont(Font.BOLD, 16));
         this.readByHashLabel.setForeground(TEXT);
         this.add(this.readByHashLabel, componentIndex++);
 
         this.readByHashField.setSize(dimension.width - 220, 32);
-        this.readByHashField.setLocation(310, 350);
+        this.readByHashField.setLocation(310, 390);
         this.readByHashField.setFont(UITools.getFont(Font.PLAIN, 16));
         this.readByHashField.setForeground(TEXT);
         this.add(this.readByHashField, componentIndex++);
+
+        this.searchTransactionLabel.setSize(300, 32);
+        this.searchTransactionLabel.setLocation(10, 430);
+        this.searchTransactionLabel.setFont(UITools.getFont(Font.BOLD, 16));
+        this.searchTransactionLabel.setForeground(TEXT);
+        this.add(this.searchTransactionLabel, componentIndex++);
+
+        this.searchTransactionField.setSize(dimension.width - 220, 32);
+        this.searchTransactionField.setLocation(310, 430);
+        this.searchTransactionField.setFont(UITools.getFont(Font.PLAIN, 16));
+        this.searchTransactionField.setForeground(TEXT);
+        this.add(this.searchTransactionField, componentIndex++);
+
+        this.searchAddressLabel.setSize(300, 32);
+        this.searchAddressLabel.setLocation(10, 470);
+        this.searchAddressLabel.setFont(UITools.getFont(Font.BOLD, 16));
+        this.searchAddressLabel.setForeground(TEXT);
+        this.add(this.searchAddressLabel, componentIndex++);
+
+        this.searchAddressField.setSize(dimension.width - 220, 32);
+        this.searchAddressField.setLocation(310, 470);
+        this.searchAddressField.setFont(UITools.getFont(Font.PLAIN, 16));
+        this.searchAddressField.setForeground(TEXT);
+        this.add(this.searchAddressField, componentIndex++);
+
+        this.searchBlocksLabel.setSize(300, 32);
+        this.searchBlocksLabel.setLocation(10, 520);
+        this.searchBlocksLabel.setFont(UITools.getFont(Font.BOLD, 16));
+        this.searchBlocksLabel.setForeground(TEXT);
+        this.add(this.searchBlocksLabel, componentIndex++);
+
+        this.searchBlocksField.setSize(dimension.width - 220, 32);
+        this.searchBlocksField.setLocation(310, 520);
+        this.searchBlocksField.setFont(UITools.getFont(Font.PLAIN, 16));
+        this.searchBlocksField.setForeground(TEXT);
+        this.add(this.searchBlocksField, componentIndex++);
+
+        this.balancesLabel.setSize(300, 32);
+        this.balancesLabel.setLocation(10, 560);
+        this.balancesLabel.setFont(UITools.getFont(Font.BOLD, 16));
+        this.balancesLabel.setForeground(TEXT);
+        this.add(this.balancesLabel, componentIndex++);
+
+        this.balancesField.setSize(dimension.width - 220, 32);
+        this.balancesField.setLocation(310, 560);
+        this.balancesField.setFont(UITools.getFont(Font.PLAIN, 16));
+        this.balancesField.setForeground(TEXT);
+        this.add(this.balancesField, componentIndex++);
 
         this.okButton.setSize(150, 48);
         this.okButton.setLocation(dimension.width - 150, dimension.height - 50);

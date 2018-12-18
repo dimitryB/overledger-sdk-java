@@ -3,6 +3,8 @@ package network.quant.mvp.presenter;
 import network.quant.api.OverledgerTransaction;
 import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.event.ApplicationHistoryChangeHandler;
+import network.quant.util.Page;
+
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +13,19 @@ public interface ContentPresenter extends Presenter, ApplicationHistoryChangeHan
 
     void loadSettingsPropertiesFromFile(File file);
 
-    void loadSettings(String bpiKey, String mappId, String writeTransactions, String readTransactionsByMappId, String readTransactionsByTransactionId, String readTransactionsByTransactionHash);
+    void loadSettings(
+            String bpiKey,
+            String mappId,
+            String writeTransactions,
+            String readTransactionsByMappId,
+            String readTransactionsByMappIdPage,
+            String readTransactionsByTransactionId,
+            String readTransactionsByTransactionHash,
+            String searchTransaction,
+            String searchAddress,
+            String searchBlocks,
+            String balances
+    );
 
     void onGotoMainWithUpdate(String bpiKey, String mappId, String writeTransactions, String readTransactionsByMappId, String readTransactionsByTransactionId, String readTransactionsByTransactionHash);
 
@@ -35,8 +49,9 @@ public interface ContentPresenter extends Presenter, ApplicationHistoryChangeHan
 
     void purchaseSuccess(UUID overledgerTransactionId);
 
-    void loadOrders(List<OverledgerTransaction> readTransactions);
+    void loadOrders(List<OverledgerTransaction> readTransactions, Page page);
 
     void loadOrders(OverledgerTransactionResponse[] writeOverledgerTransactionResponses);
 
+    void onLoadOrders(Page page);
 }

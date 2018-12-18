@@ -6,10 +6,8 @@ import network.quant.api.*;
 import network.quant.bitcoin.BitcoinAccount;
 import network.quant.bitcoin.experimental.BitcoinFaucetHelper;
 import network.quant.essential.DefaultOverledgerSDK;
-import network.quant.essential.dto.DltStreamTransactionRequest;
+import network.quant.essential.dto.*;
 import network.quant.essential.dto.DltTransactionRequest;
-import network.quant.essential.dto.OverledgerTransactionRequest;
-import network.quant.essential.dto.OverledgerTransactionResponse;
 import network.quant.ethereum.EthereumAccount;
 import network.quant.ethereum.experimental.EthereumFaucetHelper;
 import network.quant.event.ApplicationDataHandler;
@@ -20,6 +18,8 @@ import network.quant.ripple.experimental.RippleFaucetHelper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.util.Page;
+import network.quant.util.PagedResult;
 import org.web3j.crypto.Credentials;
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
@@ -119,8 +119,13 @@ public class OverledgerSDKHelper {
                     OverledgerContext.BPI_KEY, OverledgerContext.MAPP_ID,
                     OverledgerContext.WRITE_TRANSACTIONS,
                     OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID,
+                    OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE,
                     OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_ID,
-                    OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH
+                    OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH,
+                    OverledgerContext.SEARCH_TRANSACTIONS,
+                    OverledgerContext.SEARCH_ADDRESSES,
+                    OverledgerContext.SEARCH_CHAIN_BLOCKS,
+                    OverledgerContext.BALANCES_CHECK
             );
         } catch (IOException e) {
             log.error("Fail to load context file", e);
@@ -143,15 +148,25 @@ public class OverledgerSDKHelper {
                         OverledgerContext.BPI_KEY, OverledgerContext.MAPP_ID,
                         OverledgerContext.WRITE_TRANSACTIONS,
                         OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID,
+                        OverledgerContext.READ_TRANSACTIONS_BY_MAPP_ID_BY_PAGE,
                         OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_ID,
-                        OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH);
+                        OverledgerContext.READ_TRANSACTIONS_BY_TRANSACTION_HASH,
+                        OverledgerContext.SEARCH_TRANSACTIONS,
+                        OverledgerContext.SEARCH_ADDRESSES,
+                        OverledgerContext.SEARCH_CHAIN_BLOCKS,
+                        OverledgerContext.BALANCES_CHECK
+                );
                 break;
             case ORDER:
                 try {
                     if (null == this.overledgerSDK) {
                         this.overledgerSDK = DefaultOverledgerSDK.newInstance(this.network);
                     }
-                    this.applicationDataHandler.onLoadOrders(this.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID));
+                    Page page = new Page();
+                    page.setPageNumber(0);
+                    page.setPageSize(10);
+                    PagedResult<OverledgerTransaction> result = this.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID, page);
+                    this.applicationDataHandler.onLoadOrders(result.getContent(), Page.newInstance(result));
                 } catch (Exception e) {
                     if (e instanceof ClientResponseException) {
                         ClientResponseException clientResponseException = (ClientResponseException) e;
@@ -273,6 +288,18 @@ public class OverledgerSDKHelper {
             I = new OverledgerSDKHelper(applicationDataHandler);
         }
         return I;
+    }
+
+    public void loadOrder(Page page) {
+        try {
+            if (null == this.overledgerSDK) {
+                this.overledgerSDK = DefaultOverledgerSDK.newInstance(this.network);
+            }
+            PagedResult<OverledgerTransaction> result = this.overledgerSDK.readTransactions(OverledgerContext.MAPP_ID, page);
+            this.applicationDataHandler.onLoadOrders(result.getContent(), Page.newInstance(result));
+        } catch (Exception e) {
+            log.error("Unable to load page", e);
+        }
     }
 
 }

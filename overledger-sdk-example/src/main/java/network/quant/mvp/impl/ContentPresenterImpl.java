@@ -11,6 +11,7 @@ import network.quant.mvp.view.ContentView;
 import network.quant.mvp.view.View;
 import network.quant.sdk.OverledgerSDKHelper;
 import lombok.extern.slf4j.Slf4j;
+import network.quant.util.Page;
 
 import javax.swing.*;
 import java.io.File;
@@ -47,7 +48,18 @@ public class ContentPresenterImpl implements ContentPresenter {
     }
 
     @Override
-    public void loadSettings(String bpiKey, String mappId, String writeTransactions, String readTransactionsByMappId, String readTransactionsByTransactionId, String readTransactionsByTransactionHash) {
+    public void loadSettings(
+            String bpiKey,
+            String mappId,
+            String writeTransactions,
+            String readTransactionsByMappId,
+            String readTransactionsByMappIdPage,
+            String readTransactionsByTransactionId,
+            String readTransactionsByTransactionHash,
+            String searchTransaction,
+            String searchAddress,
+            String searchBlocks,
+            String balances) {
         SettingsPanel settingsPanel = this.contentView.getCurrentViewAsSettingsPanel();
         if (null != settingsPanel) {
             settingsPanel.bpiKeyField.setText(bpiKey);
@@ -55,8 +67,13 @@ public class ContentPresenterImpl implements ContentPresenter {
 
             settingsPanel.writeField.setText(writeTransactions);
             settingsPanel.readByMappIdField.setText(readTransactionsByMappId);
+            settingsPanel.readByMappIdPageField.setText(readTransactionsByMappIdPage);
             settingsPanel.readByIdField.setText(readTransactionsByTransactionId);
             settingsPanel.readByHashField.setText(readTransactionsByTransactionHash);
+            settingsPanel.searchTransactionField.setText(searchTransaction);
+            settingsPanel.searchAddressField.setText(searchAddress);
+            settingsPanel.searchBlocksField.setText(searchBlocks);
+            settingsPanel.balancesField.setText(balances);
         }
     }
 
@@ -64,13 +81,13 @@ public class ContentPresenterImpl implements ContentPresenter {
     public void loadWallet(String type, String secretKey, String address) {
         WalletPanel walletPanel = this.contentView.getCurrentViewAsWalletPanel();
         if (null != walletPanel) {
-            if (type.equals(WalletComponent.TYPE.btc.name())) {
+            if (type.equals(WalletComponent.TYPE.bitcoin.name())) {
                 walletPanel.bitcoinWallet.secretKey.setText(secretKey);
                 walletPanel.bitcoinWallet.publicAddress.setText(address);
-            } else if (type.equals(WalletComponent.TYPE.eth.name())) {
+            } else if (type.equals(WalletComponent.TYPE.ethereum.name())) {
                 walletPanel.ethereumWallet.secretKey.setText(secretKey);
                 walletPanel.ethereumWallet.publicAddress.setText(address);
-            } else if (type.equals(WalletComponent.TYPE.xrp.name())) {
+            } else if (type.equals(WalletComponent.TYPE.ripple.name())) {
                 walletPanel.rippleWallet.secretKey.setText(secretKey);
                 walletPanel.rippleWallet.publicAddress.setText(address);
             }
@@ -83,10 +100,10 @@ public class ContentPresenterImpl implements ContentPresenter {
     }
 
     @Override
-    public void loadOrders(List<OverledgerTransaction> readTransactions) {
+    public void loadOrders(List<OverledgerTransaction> readTransactions, Page page) {
         OrderPanel orderPanel = this.contentView.getCurrentViewAsOrderPanel();
         if (null != orderPanel) {
-            orderPanel.loadList(readTransactions);
+            orderPanel.loadList(readTransactions, page);
         }
     }
 
@@ -96,6 +113,11 @@ public class ContentPresenterImpl implements ContentPresenter {
         if (null != orderPanel) {
             orderPanel.loadArray(writeOverledgerTransactionResponses);
         }
+    }
+
+    @Override
+    public void onLoadOrders(Page page) {
+        this.overledgerSDKHelper.loadOrder(page);
     }
 
     @Override

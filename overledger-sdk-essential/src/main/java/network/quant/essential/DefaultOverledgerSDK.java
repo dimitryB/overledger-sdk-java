@@ -1,6 +1,5 @@
 package network.quant.essential;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import network.quant.api.*;
 import network.quant.api.DltTransactionRequest;
 import network.quant.essential.dto.*;
@@ -10,9 +9,9 @@ import network.quant.essential.exception.EmptyDltException;
 import network.quant.essential.exception.IllegalKeyException;
 import lombok.extern.slf4j.Slf4j;
 import network.quant.util.*;
-
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -45,8 +44,8 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     }
 
     private boolean verifySupportAllDLTs(OverledgerTransaction ovlTransaction) {
-        return !ovlTransaction.getDltData().stream().anyMatch(dltTransaction ->
-                (null == this.accountManager.getAccount(dltTransaction.getDlt())));
+        return ovlTransaction.getDltData().stream().anyMatch(dltTransaction ->
+                Optional.ofNullable(this.accountManager.getAccount(dltTransaction.getDlt())).isPresent());
     }
 
     public NETWORK getNetwork() {
@@ -62,9 +61,7 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public void addAccount(String dlt, Account account) {
         try {
             this.accountManager.registerAccount(dlt, account.withNetwork(this.network));
-        } catch (IllegalKeyException e) {
-            log.error(e.toString(), e);
-        } catch (EmptyAccountException e) {
+        } catch (IllegalKeyException | EmptyAccountException e) {
             log.error(e.toString(), e);
         }
     }
@@ -110,9 +107,6 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
                         return dltTransactionRequest;
                     }).collect(Collectors.toList());
             overledgerTransaction = (OverledgerTransactionResponse)this.client.postTransaction(ovlTransaction, OverledgerTransactionRequest.class, OverledgerTransactionResponse.class);
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            System.out.println(objectMapper.writeValueAsString(overledgerTransaction));
         } catch (Exception e) {
             this.throwCauseException(e);
         }
@@ -145,8 +139,9 @@ public final class DefaultOverledgerSDK implements OverledgerSDK {
     public PagedResult<OverledgerTransaction> readTransactions(String mappId, Page page) throws Exception {
         PagedResult<OverledgerTransaction> pageResult = null;
         try {
-            pageResult = this.client.getTransactions(mappId, page);
+            pageResult = this.client.getTransactions(mappId, page, OverledgerTransactionPageResult.class);
         } catch (Exception e) {
+            e.printStackTrace();
             this.throwCauseException(e);
         }
         return pageResult;
