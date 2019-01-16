@@ -133,6 +133,14 @@ public class BitcoinAccount implements Account {
         return this.key.getPrivKey();
     }
 
+    public String getPrivateKeyAsWif() {
+        return this.key.getPrivateKeyAsWiF(this.networkParameters);
+    }
+
+    public NetworkParameters getNetworkParam() {
+        return this.networkParameters;
+    }
+
     @Override
     public void sign(String fromAddress, String toAddress, String message, DltTransaction dltTransaction) {
         if (dltTransaction instanceof DltTransactionRequest) {
@@ -233,7 +241,7 @@ public class BitcoinAccount implements Account {
     }
 
     public static Account getInstance(NETWORK network, BigInteger privateKey) {
-        return getInstance(network, privateKey);
+        return getInstance(network, privateKey, null, null);
     }
 
     /**
@@ -252,7 +260,7 @@ public class BitcoinAccount implements Account {
     }
 
     public static Account getInstance(NETWORK network, byte privateKey[]) {
-        return getInstance(network, privateKey);
+        return getInstance(network, privateKey, null, null);
     }
 
     /**
@@ -271,7 +279,7 @@ public class BitcoinAccount implements Account {
     }
 
     public static Account getInstance(NETWORK network, ECKey privateKey) {
-        return getInstance(network, privateKey);
+        return getInstance(network, privateKey, null, null);
     }
 
 }

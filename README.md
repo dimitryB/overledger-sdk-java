@@ -37,7 +37,7 @@ Developers would have to install the Overledger SDK as a maven dependency.
 <dependency>
     <groupId>network.quant</groupId>
     <artifactId>overledger-sdk-bundle</artifactId>
-    <version>1.0.0-alpha</version>
+    <version>1.0.0-alpha.1</version>
 </dependency>
 ```
 
@@ -71,7 +71,7 @@ This module bundles up API, essential, Bitcoin, Ethereum and Ripple modules.
 
 ## Getting started
 
-* Follow [README](./overledger-sdk-api/README.md) from overledger-sdk-api to create content.properties.
+* Follow [README](./overledger-sdk-api/README.md) from overledger-sdk-api to create context.properties.
 
 * Then load properties into OverledgerContext
 ```
@@ -107,9 +107,11 @@ Refer [wiki](https://github.com/quantnetwork/overledger-sdk-java/wiki) for more 
 | Stable Release Version | JDK Version compatibility | BPI Version compatibility | Release Date |
 | ---------------------- | ------------------------- | ------------------------- | ------------ |
 | 1.0.0-alpha            | 11+                       | 1.0.0-alpha               | \*30/10/2018 |
+| 1.0.0-alpha.1          | 11+                       | 1.0.0-alpha.1             | \*17/12/2018 |
 
 ## Release notes
 
-| Release       |                        Notes                                     |
-| ------------- | :--------------------------------------------------------------: |
-| 1.0.0-alpha   | [v1.0.0-alpha release notes](docs/release_v1.0.0-alpha_notes.md) |
+| Release         |                        Notes                                         |
+| --------------- | :------------------------------------------------------------------: |
+| 1.0.0-alpha     | [v1.0.0-alpha release notes](docs/release_v1.0.0-alpha_notes.md)     |
+| 1.0.0-alpha.1   | [v1.0.0-alpha.1 release notes](docs/release_v1.0.0-alpha.1_notes.md) |
