@@ -187,7 +187,7 @@ public class OverledgerSDKHelper {
 
     public void generate(String type) throws Exception {
         switch (type) {
-            case "eth":
+            case "ethereum":
                 EthereumAccount ethereumAccount = (EthereumAccount)EthereumAccount.getInstance(this.network);
                 this.ethereumAccount = ethereumAccount;
                 this.applicationDataHandler.onAccountGenerated(
@@ -196,7 +196,7 @@ public class OverledgerSDKHelper {
                         Credentials.create(ethereumAccount.getEcKeyPair()).getAddress()
                 );
                 break;
-            case "btc":
+            case "bitcoin":
                 BitcoinAccount bitcoinAccount = (BitcoinAccount)BitcoinAccount.getInstance(this.network);
                 this.bitcoinAccount = bitcoinAccount;
                 this.applicationDataHandler.onAccountGenerated(
@@ -205,7 +205,7 @@ public class OverledgerSDKHelper {
                         bitcoinAccount.getKey().toAddress(bitcoinAccount.getNetworkParameters()).toBase58()
                 );
                 break;
-            case "xrp":
+            case "ripple":
                 RippleAccount rippleAccount = (RippleAccount)RippleAccount.getInstance(this.network);
                 this.rippleAccount = rippleAccount;
                 this.applicationDataHandler.onAccountGenerated(
@@ -219,7 +219,7 @@ public class OverledgerSDKHelper {
 
     public void receive(String type) {
         switch (type) {
-            case "eth":
+            case "ethereum":
                 if (null != this.ethereumAccount) {
                     EthereumFaucetHelper
                             .getInstance(this.properties.getProperty("ethereum.faucet.url"))
@@ -227,7 +227,7 @@ public class OverledgerSDKHelper {
                     this.applicationDataHandler.onAccountReceived(type, 1);
                 }
                 break;
-            case "btc":
+            case "bitcoin":
                 if (null != this.bitcoinAccount) {
                     BitcoinFaucetHelper
                             .getInstance(this.properties.getProperty("bitcoin.faucet.url"))
@@ -235,7 +235,7 @@ public class OverledgerSDKHelper {
                     this.applicationDataHandler.onAccountReceived(type, 1);
                 }
                 break;
-            case "xrp":
+            case "ripple":
                 if (null != this.rippleAccount) {
                     RippleFaucetHelper
                             .getInstance(this.properties.getProperty("ripple.faucet.url"))
